@@ -11,6 +11,7 @@ typer-template = "typer_template.main:app"
 [tool.poetry.dependencies]
 python = "^3.9"
 typer = {extras = ["all"], version = "^0.3.2"}
+python-gitlab = "^2.10.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
