@@ -1,4 +1,4 @@
-from typer_template import __version__
+from ci_plumber import __version__
 
 
 def test_version():

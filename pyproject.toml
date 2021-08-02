@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "typer-template"
+name = "CI Plumber"
 version = "0.1.0"
 description = ""
 authors = ["Miles Budden <git@miles.so>"]
 readme = "README.md"
 
 [tool.poetry.scripts]
-typer-template = "typer_template.main:app"
+ci-plumber = "ci_plumber.main:app"
 
 [tool.poetry.dependencies]
 python = "^3.9"
