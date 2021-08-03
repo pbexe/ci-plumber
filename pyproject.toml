@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "CI Plumber"
+name = "ci-plumber"
 version = "0.1.0"
 description = ""
 authors = ["Miles Budden <git@miles.so>"]
@@ -12,6 +12,7 @@ ci-plumber = "ci_plumber.main:app"
 python = "^3.9"
 typer = {extras = ["all"], version = "^0.3.2"}
 python-gitlab = "^2.10.0"
+GitPython = "^3.1.20"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
