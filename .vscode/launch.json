@@ -8,11 +8,21 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "ci_plumber/main.py",
+            "program": "${workspaceFolder}/ci_plumber/main.py",
             "console": "integratedTerminal",
             "args": [
-                "init"
-            ]
+                "${input:command}"
+            ],
+
         }
-    ]
+    ],
+    "inputs": [
+        {
+          "description": "Get Command",
+          "id": "command",
+          "type": "promptString"
+          // type specific configuration attributes
+        }
+      ]
+
 }

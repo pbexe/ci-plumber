@@ -19,7 +19,6 @@ def init() -> None:
     Initialise the project
     """
     typer.echo("Initialising app")
-
     # Get the config directory
     app_dir: str = typer.get_app_dir("CI-Plumber")
     # Get the config file
