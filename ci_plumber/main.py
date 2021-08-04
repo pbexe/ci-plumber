@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+import gitlab
 import typer
 from git import Repo
 from git.remote import Remote
@@ -39,23 +40,6 @@ def get_config_file() -> Path:
     return config_path
 
 
-def get_gitlab_access_token() -> str:
-    """
-    Gets the user's personal access token
-    """
-    typer.echo(
-        "Please generate an access token with api, read_repository, and "
-        "read_registry"
-    )
-    git_access_token_url: str = (
-        "https://git.cardiff.ac.uk/-/profile/personal_access_tokens"
-    )
-    typer.echo(f"Opening browser to: {git_access_token_url}")
-    typer.launch(git_access_token_url)
-    token: str = input("Enter your GitLab access token: ")
-    return token
-
-
 def load_config(
     config_path: Path, remote: str
 ) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -84,9 +68,11 @@ def save_config(
 @app.command()
 def init(
     gitlab_url: str = typer.Option("https://git.cardiff.ac.uk", prompt=True),
-    username: str = typer.Option(..., prompt=True),
-    password: str = typer.Option(
-        ..., prompt=True, confirmation_prompt=True, hide_input=True
+    access_token: str = typer.Option(
+        ...,
+        prompt=True,
+        help="GitLab access token. Please"
+        " allow api, read_repository, and read_registry scopes.",
     ),
 ) -> None:
     """
@@ -96,9 +82,16 @@ def init(
     # Get the config file
     config_path: Path = get_config_file()
     # Get the repo
-    repo = Repo(Path.cwd())
+    repo: Repo = Repo(Path.cwd())
     # Check it isn't bare
-    assert not repo.bare
+    try:
+        assert not repo.bare
+    except AssertionError:
+        typer.echo(
+            "This directory is not a Git repository. Please run 'git init'"
+            " first"
+        )
+        typer.Exit(1)
     # Get the remotes
     remotes: IterableList[Remote] = repo.remotes
     remote: str = ""
@@ -114,7 +107,26 @@ def init(
     # Load the config
     current_config, config = load_config(config_path, remote)
 
-    current_config["access_token"] = get_gitlab_access_token()
+    current_config["access_token"] = access_token
+
+    gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
+
+    projects = gl.projects.list(owned=True)
+
+    # Try to match the project with remote projects
+    matches: bool = False
+    for project in projects:
+        if project.ssh_url_to_repo == remote:
+            current_config["gitlab_project_id"] = project.id  # ssh matches
+            matches = True
+            break
+        elif project.http_url_to_repo == remote:
+            current_config["gitlab_project_id"] = project.id  # http matches
+            matches = True
+            break
+    if not matches:
+        typer.echo(f"{remote} doesn't match")
+        typer.Exit(1)
 
     # Save the config
     config["repos"][remote] = current_config
