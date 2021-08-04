@@ -1,6 +1,22 @@
 # Typer Template
 
 ## Installation
+
+```sh
+pip install ci-plumber
+```
+
+## Usage
+
+Initialise with a repo
+
+```sh
+ci-plumber init
+```
+
+## Developing
+
+### Installation
 ```sh
 # Install dependencies
 $ poetry install
@@ -12,7 +28,7 @@ $ pre-commit autoupdate
 $ pre-commit run --all-files
 ```
 
-## Features
+### Features
 
 - Runs checks on commit
     - Flake8

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "ci-plumber"
 version = "0.1.0"
-description = ""
+description = "Plumb together different CI/CD services"
 authors = ["Miles Budden <git@miles.so>"]
 readme = "README.md"
 
