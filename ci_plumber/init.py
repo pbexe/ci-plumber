@@ -8,6 +8,8 @@ from git import Repo
 from git.remote import Remote
 from git.util import IterableList
 
+from ci_plumber.ci_yaml_template import template
+
 
 def get_config_file() -> Path:
     """
@@ -51,9 +53,20 @@ def load_config(
 def save_config(
     config_path: Path, remote: str, config: dict[str, Any]
 ) -> None:
-    # Save the current config
+    """
+    Saves the config file
+    """
     with config_path.open("w") as fp:
         json.dump(config, fp)
+
+
+def generate_gitlab_yaml(yaml: Path) -> None:
+    """
+    Generates the .gitlab-ci.yml file if it doesn't exist
+    """
+    if not yaml.is_file():
+        with yaml.open("w") as fp:
+            fp.write(template)
 
 
 def init(
@@ -117,6 +130,9 @@ def init(
     if not matches:
         typer.echo(f"{remote} doesn't match")
         typer.Exit(1)
+
+    # Generate .gitlab-ci.yml
+    generate_gitlab_yaml(Path.cwd() / ".gitlab-ci.yml")
 
     # Save the config
     config["repos"][remote] = current_config

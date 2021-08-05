@@ -1,6 +1,6 @@
 import typer
 
-from .init import init
+from ci_plumber.init import init
 
 app = typer.Typer()
 app.command()(init)

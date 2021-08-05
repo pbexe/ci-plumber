@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-pip install ci-plumber
+pip install ci-plumber --extra-index-url https://__token__:<your_personal_token>@git.cardiff.ac.uk/api/v4/projects/5484/packages/pypi/simple
 ```
 
 ## Usage
