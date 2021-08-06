@@ -13,6 +13,7 @@
             "args": [
                 "${input:command}"
             ],
+            "cwd": "/mnt/c/Users/conta/repos/flask-demo"
 
         }
     ],

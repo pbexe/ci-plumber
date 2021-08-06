@@ -10,6 +10,8 @@ from git.util import IterableList
 
 from ci_plumber.ci_yaml_template import template
 
+# from git import remote
+
 
 def get_config_file() -> Path:
     """
@@ -69,21 +71,15 @@ def generate_gitlab_yaml(yaml: Path) -> None:
             fp.write(template)
 
 
-def init(
-    gitlab_url: str = typer.Option("https://git.cardiff.ac.uk", prompt=True),
-    access_token: str = typer.Option(
-        ...,
-        prompt=True,
-        help="GitLab access token. Please"
-        " allow api, read_repository, and read_registry scopes.",
-    ),
-) -> None:
+def generate_docker_file(path: Path) -> None:
     """
-    Initialise the project
+    Generates a dockerfile
     """
-    typer.echo(typer.style("Initialising", dim=True))
-    # Get the config file
-    config_path: Path = get_config_file()
+    # TODO: Work out what type of project it is etc
+    ...
+
+
+def get_repo(dir: Path) -> str:
     # Get the repo
     repo: Repo = Repo(Path.cwd())
     # Check it isn't bare
@@ -106,6 +102,35 @@ def init(
         # TODO Allow for multiple remotes
         typer.echo("Found multiple/no remotes")
         typer.Exit(1)
+    return remote
+
+
+def init(
+    gitlab_url: str = typer.Option("https://git.cardiff.ac.uk", prompt=True),
+    username: str = typer.Option(
+        ..., prompt=True, help="Your network username"
+    ),
+    email: str = typer.Option(..., prompt=True, help="Your network email"),
+    access_token: str = typer.Option(
+        ...,
+        prompt=True,
+        help="GitLab access token. Please allow api, read_repository, and "
+        "read_registry scopes.",
+    ),
+    docker_registry_url: str = typer.Option(
+        "https://registry.git.cf.ac.uk",
+        prompt=True,
+        help="The URL of the docker registry",
+    ),
+) -> None:
+    """
+    Initialise the project
+    """
+    typer.echo(typer.style("Initialising", dim=True))
+    # Get the config file
+    config_path: Path = get_config_file()
+
+    remote = get_repo(Path.cwd())
 
     # Load the config
     current_config, config = load_config(config_path, remote)
@@ -131,8 +156,15 @@ def init(
         typer.echo(f"{remote} doesn't match")
         typer.Exit(1)
 
+    current_config["gitlab_url"] = gitlab_url
+    current_config["username"] = username
+    current_config["docker_registry_url"] = docker_registry_url
+    current_config["email"] = email
+
     # Generate .gitlab-ci.yml
     generate_gitlab_yaml(Path.cwd() / ".gitlab-ci.yml")
+
+    generate_docker_file(Path.cwd() / "Dockerfile")
 
     # Save the config
     config["repos"][remote] = current_config
