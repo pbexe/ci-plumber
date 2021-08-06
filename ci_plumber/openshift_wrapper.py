@@ -8,12 +8,11 @@ from openshift.dynamic import DynamicClient
 
 from ci_plumber.init import get_config_file, get_repo, load_config
 
-# import subprocess
-
 
 def openshift_deploy(
     project: str = typer.Option(..., help="Project name", prompt=True)
 ) -> None:
+    """Deploys a project to OpenShift"""
 
     # Load the config
     config_path: Path = get_config_file()

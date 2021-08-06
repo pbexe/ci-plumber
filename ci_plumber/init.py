@@ -59,7 +59,7 @@ def save_config(
     Saves the config file
     """
     with config_path.open("w") as fp:
-        json.dump(config, fp)
+        json.dump(config, fp, indent=4)
 
 
 def generate_gitlab_yaml(yaml: Path) -> None:
@@ -118,7 +118,7 @@ def init(
         "read_registry scopes.",
     ),
     docker_registry_url: str = typer.Option(
-        "https://registry.git.cf.ac.uk",
+        "registry.git.cf.ac.uk",
         prompt=True,
         help="The URL of the docker registry",
     ),
