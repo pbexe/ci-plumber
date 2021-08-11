@@ -15,8 +15,10 @@ from ci_plumber.ci_yaml_template import template
 
 
 def get_config_file() -> Path:
-    """
-    Gets the config file. Generates it if it doesn't exist.
+    """Gets the location of the config file, as well as ensuring it exists
+
+    Returns:
+        Path: The path to the config file
     """
     # Get the config directory
     app_dir: str = typer.get_app_dir("CI-Plumber")
@@ -39,8 +41,14 @@ def get_config_file() -> Path:
 def load_config(
     config_path: Path, remote: str
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    """
-    Loads the config file
+    """Loads the config file
+
+    Args:
+        config_path (Path): The path to the config file
+        remote (str): The remote to use
+
+    Returns:
+        tuple[dict[str, Any], dict[str, Any]]: The config and repo data
     """
     config: dict[str, Any] = {}
     with config_path.open("r") as fp:
@@ -56,25 +64,37 @@ def load_config(
 def save_config(
     config_path: Path, remote: str, config: dict[str, Any]
 ) -> None:
-    """
-    Saves the config file
+    """Saves the config to the config file
+
+    Args:
+        config_path (Path): The path to the config file
+        remote (str): The remote to use
+        config (dict[str, Any]): The config to save
     """
     with config_path.open("w") as fp:
         json.dump(config, fp, indent=4)
 
 
-def generate_gitlab_yaml(yaml: Path, file_name: str) -> None:
-    """
-    Generates the .gitlab-ci.yml file if it doesn't exist
+def generate_gitlab_yaml(yaml: Path, file_name: str = "gitlab-ci.yml") -> None:
+    """Generates the GitLab CI YAML file if it doesn't exist
+
+    Args:
+        yaml (Path): The path to the directory to generate the YAML file in
+        file_name (str, optional): The nameof the YAML file to generate.
+                                   Defaults to "gitlab-ci.yml".
     """
     if not (yaml / file_name).is_file():
         with (yaml / file_name).open("w") as fp:
             fp.write(template)
 
 
-def generate_docker_file(path: Path, file_name: str) -> None:
-    """
-    Generates a dockerfile
+def generate_docker_file(path: Path, file_name: str = "Dockerfile") -> None:
+    """Gernerates the Dockerfile if it doesn't exist
+
+    Args:
+        path (Path): The path to the directory
+        file_name (str, optional): The name of the dockerfile to generate.
+                                   Defaults to "Dockerfile".
     """
     framework = detect(path)
     dockerfile = get_dockerfile(framework["dockerfile"])
@@ -85,6 +105,14 @@ def generate_docker_file(path: Path, file_name: str) -> None:
 
 
 def get_repo(dir: Path) -> str:
+    """Gets a repo remote from a directory
+
+    Args:
+        dir (Path): The path to the directory to get the repo from
+
+    Returns:
+        str: The repo remote
+    """
     # Get the repo
     repo: Repo = Repo(Path.cwd())
     # Check it isn't bare
@@ -128,8 +156,22 @@ def init(
         help="The URL of the docker registry",
     ),
 ) -> None:
-    """
-    Initialise the project
+    """Initialises the CI plumber
+
+    Args:
+        gitlab_url (str, optional): The URL of the GitLab instance to use.
+            Defaults to typer.Option("git.cardiff.ac.uk", prompt=True).
+        username (str, optional): The network username to use. Defaults to
+            typer.Option( ..., prompt=True, help="Your network username" ).
+        email (str, optional): The email address associated with that username.
+            Defaults to typer.Option(..., prompt=True, help="Your network
+            email").
+        access_token (str, optional): The Gitlab access token to use. Defaults
+            to typer.Option( ..., prompt=True, help="GitLab access token.
+            Please allow api, read_repository, and " "read_registry scopes.").
+        docker_registry_url (str, optional): The URL of the docker registry.
+            Defaults to typer.Option( "registry.git.cf.ac.uk", prompt=True,
+            help="The URL of the docker registry", ).
     """
     typer.echo(typer.style("Initialising", dim=True))
     # Get the config file
