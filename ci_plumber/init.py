@@ -11,10 +11,9 @@ from git.util import IterableList
 
 from ci_plumber.ci_yaml_template import template
 
-# from git import remote
-
 
 def get_config_file() -> Path:
+    #
     """Gets the location of the config file, as well as ensuring it exists
 
     Returns:
@@ -41,6 +40,7 @@ def get_config_file() -> Path:
 def load_config(
     config_path: Path, remote: str
 ) -> tuple[dict[str, Any], dict[str, Any]]:
+    #
     """Loads the config file
 
     Args:
@@ -156,23 +156,8 @@ def init(
         help="The URL of the docker registry",
     ),
 ) -> None:
-    """Initialises the CI plumber
-
-    Args:
-        gitlab_url (str, optional): The URL of the GitLab instance to use.
-            Defaults to typer.Option("git.cardiff.ac.uk", prompt=True).
-        username (str, optional): The network username to use. Defaults to
-            typer.Option( ..., prompt=True, help="Your network username" ).
-        email (str, optional): The email address associated with that username.
-            Defaults to typer.Option(..., prompt=True, help="Your network
-            email").
-        access_token (str, optional): The Gitlab access token to use. Defaults
-            to typer.Option( ..., prompt=True, help="GitLab access token.
-            Please allow api, read_repository, and " "read_registry scopes.").
-        docker_registry_url (str, optional): The URL of the docker registry.
-            Defaults to typer.Option( "registry.git.cf.ac.uk", prompt=True,
-            help="The URL of the docker registry", ).
-    """
+    # ...
+    """Initialises the CI plumber"""
     typer.echo(typer.style("Initialising", dim=True))
     # Get the config file
     config_path: Path = get_config_file()
