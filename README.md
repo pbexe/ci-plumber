@@ -1,5 +1,7 @@
 # Typer Template
 
+[![CodeFactor](https://www.codefactor.io/repository/github/pbexe/ci-plumber/badge)](https://www.codefactor.io/repository/github/pbexe/ci-plumber)
+
 ## Installation
 
 ```sh
