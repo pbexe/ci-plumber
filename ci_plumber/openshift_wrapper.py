@@ -23,7 +23,10 @@ def openshift_deploy(
     email = current_config["email"]
     access_token = current_config["access_token"]
 
-    gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
+    if "http" not in gitlab_url:
+        gl = gitlab.Gitlab("https://" + gitlab_url, private_token=access_token)
+    else:
+        gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
 
     gl_project = gl.projects.get(current_config["gitlab_project_id"])
 

@@ -4,6 +4,7 @@ from typing import Any
 
 import gitlab
 import typer
+from framework_detector import detect, get_dockerfile
 from git import Repo
 from git.remote import Remote
 from git.util import IterableList
@@ -62,21 +63,25 @@ def save_config(
         json.dump(config, fp, indent=4)
 
 
-def generate_gitlab_yaml(yaml: Path) -> None:
+def generate_gitlab_yaml(yaml: Path, file_name: str) -> None:
     """
     Generates the .gitlab-ci.yml file if it doesn't exist
     """
-    if not yaml.is_file():
-        with yaml.open("w") as fp:
+    if not (yaml / file_name).is_file():
+        with (yaml / file_name).open("w") as fp:
             fp.write(template)
 
 
-def generate_docker_file(path: Path) -> None:
+def generate_docker_file(path: Path, file_name: str) -> None:
     """
     Generates a dockerfile
     """
-    # TODO: Work out what type of project it is etc
-    ...
+    framework = detect(path)
+    dockerfile = get_dockerfile(framework["dockerfile"])
+
+    if not (path / file_name).is_file():
+        with (path / file_name).open("w") as fp:
+            fp.write(dockerfile)
 
 
 def get_repo(dir: Path) -> str:
@@ -106,7 +111,7 @@ def get_repo(dir: Path) -> str:
 
 
 def init(
-    gitlab_url: str = typer.Option("https://git.cardiff.ac.uk", prompt=True),
+    gitlab_url: str = typer.Option("git.cardiff.ac.uk", prompt=True),
     username: str = typer.Option(
         ..., prompt=True, help="Your network username"
     ),
@@ -137,7 +142,10 @@ def init(
 
     current_config["access_token"] = access_token
 
-    gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
+    if "http" not in gitlab_url:
+        gl = gitlab.Gitlab("https://" + gitlab_url, private_token=access_token)
+    else:
+        gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
 
     projects = gl.projects.list(owned=True)
 
@@ -162,9 +170,9 @@ def init(
     current_config["email"] = email
 
     # Generate .gitlab-ci.yml
-    generate_gitlab_yaml(Path.cwd() / ".gitlab-ci.yml")
+    generate_gitlab_yaml(Path.cwd(), "gitlab-ci.yml")
 
-    generate_docker_file(Path.cwd() / "Dockerfile")
+    generate_docker_file(Path.cwd(), "Dockerfile")
 
     # Save the config
     config["repos"][remote] = current_config
