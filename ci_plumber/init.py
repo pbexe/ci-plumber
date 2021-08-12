@@ -29,17 +29,14 @@ def init(
         help="The URL of the docker registry",
     ),
 ) -> None:
-    # ...
     """Initialises the CI plumber"""
     typer.echo(typer.style("Initialising", dim=True))
     # Get the config file
     config_path: Path = get_config_file()
-
     remote = get_repo(Path.cwd())
 
     # Load the config
     current_config, config = load_config(config_path, remote)
-
     current_config["access_token"] = access_token
 
     if "http" not in gitlab_url:
@@ -71,7 +68,6 @@ def init(
 
     # Generate .gitlab-ci.yml
     generate_gitlab_yaml(Path.cwd(), "gitlab-ci.yml")
-
     generate_docker_file(Path.cwd(), "Dockerfile")
 
     # Save the config
