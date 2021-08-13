@@ -1,5 +1,6 @@
 import subprocess
 from pathlib import Path
+from typing import Any
 
 import gitlab
 import typer
@@ -9,8 +10,13 @@ from openshift.dynamic import DynamicClient
 from ci_plumber.helpers import get_config_file, get_repo, load_config
 
 
-def get_username() -> str:
-    return load_config(get_config_file(), get_repo(Path.cwd()))[0]["username"]
+def get_username() -> Any:
+    try:
+        return load_config(get_config_file(), get_repo(Path.cwd()))[0][
+            "username"
+        ]
+    except KeyError:
+        return ...
 
 
 def openshift_deploy(

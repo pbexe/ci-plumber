@@ -35,6 +35,5 @@ def get_repo(dir: Path) -> str:
         remote = remotes[0].url
     else:
         # TODO Allow for multiple remotes
-        typer.echo("Found multiple/no remotes")
-        typer.Exit(1)
+        raise KeyError("Found multiple/no remotes")
     return remote

@@ -6,7 +6,6 @@ import typer
 
 
 def get_config_file() -> Path:
-    #
     """Gets the location of the config file, as well as ensuring it exists
 
     Returns:
@@ -33,7 +32,6 @@ def get_config_file() -> Path:
 def load_config(
     config_path: Path, remote: str
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    #
     """Loads the config file
 
     Args:
