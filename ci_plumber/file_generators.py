@@ -3,7 +3,7 @@ from pathlib import Path
 
 from framework_detector import detect, get_dockerfile
 
-from ci_plumber import yaml_templates
+from ci_plumber import templates
 
 
 def generate_gitlab_yaml(yaml: Path, file_name: str = "gitlab-ci.yml") -> None:
@@ -16,9 +16,7 @@ def generate_gitlab_yaml(yaml: Path, file_name: str = "gitlab-ci.yml") -> None:
     """
     if not (yaml / file_name).is_file():
         with (yaml / file_name).open("w") as fp:
-            fp.write(
-                importlib.resources.read_text(yaml_templates, "gitlab-ci.yml")
-            )
+            fp.write(importlib.resources.read_text(templates, "gitlab-ci.yml"))
 
 
 def generate_docker_file(path: Path, file_name: str = "Dockerfile") -> None:
