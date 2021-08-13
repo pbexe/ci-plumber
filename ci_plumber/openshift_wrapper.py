@@ -171,7 +171,7 @@ def create_db_config(
         "mariadb", help="Database service name"
     ),
     mysql_user: str = typer.Option(
-        ...,
+        "maria_user",
         help="Username for MariaDB user that will be used for accessing the "
         "database.",
     ),
@@ -201,19 +201,31 @@ def create_db_config(
     # If there isn't a database config file, create one.
     db_config_file: Path = Path.cwd() / "maria.env"
     if not db_config_file.exists():
-        with db_config_file.open() as fp:
+        db_config_file.touch()
+        with db_config_file.open("w") as fp:
             fp.writelines(
                 [
-                    f"MEMORY_LIMIT={memory_limit}",
-                    f"NAMESPACE={namespace}",
-                    f"DATABASE_SERVICE_NAME={database_service_name}",
-                    f"MYSQL_USER={mysql_user}",
-                    f"MYSQL_PASSWORD={mysql_password}",
-                    f"MYSQL_ROOT_PASSWORD={mysql_root_password}",
-                    f"MYSQL_DATABASE={mysql_database}",
-                    f"MARIADB_VERSION={mariadb_version}",
-                    f"VOLUME_CAPACITY={volume_capacity}",
+                    f"MEMORY_LIMIT={memory_limit}\n",
+                    f"NAMESPACE={namespace}\n",
+                    f"DATABASE_SERVICE_NAME={database_service_name}\n",
+                    f"MYSQL_USER={mysql_user}\n",
+                    f"MYSQL_PASSWORD={mysql_password}\n",
+                    f"MYSQL_ROOT_PASSWORD={mysql_root_password}\n",
+                    f"MYSQL_DATABASE={mysql_database}\n",
+                    f"MARIADB_VERSION={mariadb_version}\n",
+                    f"VOLUME_CAPACITY={volume_capacity}\n",
                 ]
             )
     with (Path.cwd() / ".gitignore").open("a") as fp:
         fp.write("maria.env\n")
+
+
+def create_database_command(config_path: Path) -> None:
+    subprocess.run(
+        ["oc", "new-app", "mariadb", f"--param-file={config_path.resolve()}"],
+        check=True,
+    )  # nosec
+
+
+def create_database() -> None:
+    create_database_command((Path.cwd() / "maria.env"))
