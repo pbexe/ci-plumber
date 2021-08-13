@@ -6,7 +6,7 @@ import typer
 from kubernetes import config
 from openshift.dynamic import DynamicClient
 
-from ci_plumber.init import get_config_file, get_repo, load_config
+from ci_plumber.helpers import get_config_file, get_repo, load_config
 
 
 def get_username() -> str:
@@ -216,6 +216,7 @@ def create_db_config(
                     f"VOLUME_CAPACITY={volume_capacity}\n",
                 ]
             )
+    # TODO Check for duplication in the gitignore file.
     with (Path.cwd() / ".gitignore").open("a") as fp:
         fp.write("maria.env\n")
 

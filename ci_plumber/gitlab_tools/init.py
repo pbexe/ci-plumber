@@ -3,12 +3,14 @@ from pathlib import Path
 import gitlab
 import typer
 
-from ci_plumber.config_helpers import get_config_file, load_config, save_config
-from ci_plumber.file_generators import (
+from ci_plumber.helpers import (
     generate_docker_file,
     generate_gitlab_yaml,
+    get_config_file,
+    get_repo,
+    load_config,
+    save_config,
 )
-from ci_plumber.git_helpers import get_repo
 
 
 def init(
