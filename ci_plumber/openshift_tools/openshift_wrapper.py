@@ -227,12 +227,21 @@ def create_db_config(
         fp.write("maria.env\n")
 
 
-def create_database_command(config_path: Path) -> None:
+def create_database_command(
+    config_path: Path = (Path.cwd() / "maria.env"),
+) -> None:
     subprocess.run(
-        ["oc", "new-app", "mariadb", f"--param-file={config_path.resolve()}"],
+        [
+            "oc",
+            "new-app",
+            "--template=openshift/mariadb-persistent",
+            f"--param-file={config_path.resolve()}",
+        ],
         check=True,
     )  # nosec
+    subprocess.run(["oc", "expose", "service/mariadb"], check=True)  # nosec
+    subprocess.run(["oc", "describe", "routes/mariadb"], check=True)
 
 
 def create_database() -> None:
-    create_database_command((Path.cwd() / "maria.env"))
+    create_database_command()
