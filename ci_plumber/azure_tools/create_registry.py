@@ -70,6 +70,6 @@ def create_registry(
     typer.echo(
         f"{credentials['username']}:"
         f"{credentials['passwords'][0]['value']}\nor\n"
-        f"{credentials['passwords'][0]['value']}"
+        f"{credentials['passwords'][1]['value']}"
     )
     # TODO Load them into gitlab
