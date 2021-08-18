@@ -17,6 +17,7 @@ types-requests = "^2.25.2"
 importlib-metadata = "^4.6.3"
 openshift = "^0.12.1"
 framework-detector = "^0.2.1"
+rich = "^10.7.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
