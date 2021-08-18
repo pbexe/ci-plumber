@@ -31,7 +31,7 @@ def get_config_file() -> Path:
 
 def load_config(
     config_path: Path, remote: str
-) -> tuple[dict[str, Any], dict[str, Any]]:
+) -> tuple[dict[str, str], dict[str, dict[str, dict[str, str]]]]:
     """Loads the config file
 
     Args:
@@ -41,10 +41,10 @@ def load_config(
     Returns:
         tuple[dict[str, Any], dict[str, Any]]: The config and repo data
     """
-    config: dict[str, Any] = {}
+    config: dict[str, dict[str, dict[str, str]]] = {}
     with config_path.open("r") as fp:
         config = json.load(fp)
-    current_config: dict[str, Any] = {}
+    current_config: dict[str, str] = {}
     if remote in config["repos"]:
         current_config = config["repos"][remote]
     else:

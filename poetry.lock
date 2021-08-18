@@ -155,7 +155,7 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "framework-detector"
-version = "0.1.5"
+version = "0.2.1"
 description = "Detects which framework is in use in a project"
 category = "main"
 optional = false
@@ -773,7 +773,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ce6883f190e8c9005cad6554bc0cc84afedaf5195476c870a57c8a19a01d21be"
+content-hash = "2b54aaba688011c2d4938f4dd0f4ea5e06a8ff483c53cf3c5ae0a29f09a3a228"
 
 [metadata.files]
 appdirs = [
@@ -887,8 +887,8 @@ flake8 = [
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
 ]
 framework-detector = [
-    {file = "framework-detector-0.1.5.tar.gz", hash = "sha256:f5bcefcb11a9ab6343a07b6a75547decd48a5f1a7415d47f71f3fd212d0c9946"},
-    {file = "framework_detector-0.1.5-py3-none-any.whl", hash = "sha256:ffcf45440dd4b062060add233a5d815c28f0fc8da1c4234800fdf6ef5c5e2ea2"},
+    {file = "framework-detector-0.2.1.tar.gz", hash = "sha256:18aa052180b3b8faa9a57d515a79f503276299aaf7e7db08942c5cb07b34225f"},
+    {file = "framework_detector-0.2.1-py3-none-any.whl", hash = "sha256:1d3a627613202e29e17ce138bd96e39c398cac035fe01b7267fee7e6b893b9df"},
 ]
 gitdb = [
     {file = "gitdb-4.0.7-py3-none-any.whl", hash = "sha256:6c4cc71933456991da20917998acbe6cf4fb41eeaab7d6d67fbc05ecd4c865b0"},

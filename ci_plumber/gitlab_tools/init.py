@@ -1,8 +1,8 @@
 from pathlib import Path
 
-import gitlab
 import typer
 
+from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
     generate_docker_file,
     generate_gitlab_yaml,
@@ -31,20 +31,23 @@ def init(
         help="The URL of the docker registry",
     ),
 ) -> None:
-    """Initialises the CI plumber"""
+    """Initialises Gitlab: Logs in and determines the gitlab repo to use."""
     typer.echo(typer.style("Initialising", dim=True))
     # Get the config file
     config_path: Path = get_config_file()
     remote = get_repo(Path.cwd())
 
-    # Load the config
     current_config, config = load_config(config_path, remote)
-    current_config["access_token"] = access_token
 
-    if "http" not in gitlab_url:
-        gl = gitlab.Gitlab("https://" + gitlab_url, private_token=access_token)
-    else:
-        gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
+    current_config["gitlab_url"] = gitlab_url
+    current_config["username"] = username
+    current_config["docker_registry_url"] = docker_registry_url
+    current_config["email"] = email
+    current_config["access_token"] = access_token
+    config["repos"][remote] = current_config
+    save_config(config_path, remote, config)
+
+    gl = get_gitlab_client()
 
     projects = gl.projects.list(owned=True)
 
@@ -62,11 +65,6 @@ def init(
     if not matches:
         typer.echo(f"{remote} doesn't match")
         typer.Exit(1)
-
-    current_config["gitlab_url"] = gitlab_url
-    current_config["username"] = username
-    current_config["docker_registry_url"] = docker_registry_url
-    current_config["email"] = email
 
     # Generate .gitlab-ci.yml
     generate_gitlab_yaml(Path.cwd(), "gitlab-ci.yml")

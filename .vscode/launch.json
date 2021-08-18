@@ -11,9 +11,10 @@
             "program": "${workspaceFolder}/ci_plumber/main.py",
             "console": "integratedTerminal",
             "args": [
-                "${input:command}"
+                "${input:command}",
+                "${input:sub-command}"
             ],
-            "cwd": "/mnt/c/Users/conta/repos/flask-demo"
+            "cwd": "/home/miles/repos/flask-demo"
 
         }
     ],
@@ -23,7 +24,13 @@
           "id": "command",
           "type": "promptString"
           // type specific configuration attributes
-        }
+        },
+        {
+            "description": "Get Sub-command",
+            "id": "sub-command",
+            "type": "promptString"
+            // type specific configuration attributes
+          }
       ]
 
 }

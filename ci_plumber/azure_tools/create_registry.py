@@ -4,6 +4,14 @@ import subprocess
 
 import typer
 
+from ci_plumber.gitlab_tools.auth import get_gitlab_client
+from ci_plumber.helpers import (
+    generate_gitlab_yaml,
+    get_config_file,
+    get_repo,
+    load_config,
+)
+
 
 def create_registry(
     registry_name: str = typer.Option(
@@ -39,13 +47,17 @@ def create_registry(
         typer.echo("The resource group already exists")
 
     # Create the registry
-    subprocess.run(
+    create_registry_json = subprocess.run(
         f"az acr create --resource-group {resource_group_name} --name "
         f"{registry_name} --sku {sku}".split(),
         check=True,
         capture_output=True,
         text=True,
     )
+
+    create_registry = json.loads(create_registry_json.stdout)
+
+    login_server = create_registry["loginServer"]
 
     # Enable the admin user
     subprocess.run(
@@ -72,4 +84,17 @@ def create_registry(
         f"{credentials['passwords'][0]['value']}\nor\n"
         f"{credentials['passwords'][1]['value']}"
     )
-    # TODO Load them into gitlab
+
+    gl = get_gitlab_client()
+    current_config, _ = load_config(get_config_file(), get_repo())
+    gl_project = gl.projects.get(current_config["gitlab_project_id"])
+    gl_project.variables.create(
+        {
+            "AZURE_REGISTRY": login_server,
+            "AZURE_USERNAME": credentials["username"],
+            "AZURE_PASSWORD": credentials["passwords"][0]["value"],
+            "AZURE_REGISTRY_IMAGE": login_server
+            + gl_project.path_with_namespace,
+        }
+    )
+    generate_gitlab_yaml(file_name="gitlab-ci-azure.yml", overwrite=True)

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ci-plumber"
-version = "0.3.0"
+version = "0.4.0"
 description = "Plumb together different CI/CD services"
 authors = ["Miles Budden <git@miles.so>"]
 readme = "README.md"
@@ -16,7 +16,7 @@ GitPython = "^3.1.20"
 types-requests = "^2.25.2"
 importlib-metadata = "^4.6.3"
 openshift = "^0.12.1"
-framework-detector = "^0.1.5"
+framework-detector = "^0.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -45,8 +45,8 @@ exclude = '''
 
 (
   /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
+      \.eggs
+    | \.git
     | \.hg
     | \.mypy_cache
     | \.tox
@@ -56,7 +56,6 @@ exclude = '''
     | build
     | dist
   )/
-  | foo.py           # also separately exclude a file named foo.py in
-                     # the root of the project
+  | foo.py
 )
 '''

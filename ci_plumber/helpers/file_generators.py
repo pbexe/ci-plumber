@@ -6,7 +6,11 @@ from framework_detector import detect, get_dockerfile
 from ci_plumber import templates
 
 
-def generate_gitlab_yaml(yaml: Path, file_name: str = "gitlab-ci.yml") -> None:
+def generate_gitlab_yaml(
+    yaml: Path = Path.cwd(),
+    file_name: str = "gitlab-ci.yml",
+    overwrite: bool = False,
+) -> None:
     """Generates the GitLab CI YAML file if it doesn't exist
 
     Args:
@@ -14,7 +18,7 @@ def generate_gitlab_yaml(yaml: Path, file_name: str = "gitlab-ci.yml") -> None:
         file_name (str, optional): The nameof the YAML file to generate.
             Defaults to "gitlab-ci.yml".
     """
-    if not (yaml / file_name).is_file():
+    if not (yaml / file_name).is_file() or overwrite:
         with (yaml / file_name).open("w") as fp:
             fp.write(importlib.resources.read_text(templates, "gitlab-ci.yml"))
 

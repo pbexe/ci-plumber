@@ -6,7 +6,7 @@ from git.remote import Remote
 from git.util import IterableList
 
 
-def get_repo(dir: Path) -> str:
+def get_repo(dir: Path = Path.cwd()) -> str:
     """Gets a repo remote from a directory
 
     Args:
