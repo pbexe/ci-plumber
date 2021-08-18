@@ -1,3 +1,11 @@
+default:
+  tags:
+    #- comsc-ci
+    - general-docker
+
+variables:
+  GIT_STRATEGY: clone
+
 stages:
 - build
 

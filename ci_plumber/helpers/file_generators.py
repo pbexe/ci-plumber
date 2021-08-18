@@ -8,8 +8,9 @@ from ci_plumber import templates
 
 def generate_gitlab_yaml(
     yaml: Path = Path.cwd(),
-    file_name: str = "gitlab-ci.yml",
+    file_name: str = ".gitlab-ci.yml",
     overwrite: bool = False,
+    template: str = "gitlab-ci.yml",
 ) -> None:
     """Generates the GitLab CI YAML file if it doesn't exist
 
@@ -20,7 +21,7 @@ def generate_gitlab_yaml(
     """
     if not (yaml / file_name).is_file() or overwrite:
         with (yaml / file_name).open("w") as fp:
-            fp.write(importlib.resources.read_text(templates, "gitlab-ci.yml"))
+            fp.write(importlib.resources.read_text(templates, template))
 
 
 def generate_docker_file(path: Path, file_name: str = "Dockerfile") -> None:

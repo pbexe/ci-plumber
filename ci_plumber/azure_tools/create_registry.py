@@ -34,6 +34,7 @@ def create_registry(
     """Create a new Azure Container Registry"""
 
     # Create the resource group
+    typer.echo(f"Creating resource group {resource_group_name}")
     try:
         subprocess.run(
             f"az group create --name {resource_group_name} --location "
@@ -47,6 +48,7 @@ def create_registry(
         typer.echo("The resource group already exists")
 
     # Create the registry
+    typer.echo(f"Creating registry {registry_name}")
     create_registry_json = subprocess.run(
         f"az acr create --resource-group {resource_group_name} --name "
         f"{registry_name} --sku {sku}".split(),
@@ -60,6 +62,7 @@ def create_registry(
     login_server = create_registry["loginServer"]
 
     # Enable the admin user
+    typer.echo("Enabling admin user")
     subprocess.run(
         f"az acr update -n {registry_name} --admin-enabled true".split(),
         check=True,
@@ -68,6 +71,7 @@ def create_registry(
     )
 
     # Get the admin's credentials
+    typer.echo("Getting admin credentials")
     credentials_json = subprocess.run(
         f"az acr credential show --resource-group "
         f"{resource_group_name} --name {registry_name}".split(),
@@ -84,17 +88,30 @@ def create_registry(
         f"{credentials['passwords'][0]['value']}\nor\n"
         f"{credentials['passwords'][1]['value']}"
     )
-
+    typer.echo("Logging in to Gitlab")
     gl = get_gitlab_client()
     current_config, _ = load_config(get_config_file(), get_repo())
     gl_project = gl.projects.get(current_config["gitlab_project_id"])
     gl_project.variables.create(
+        {"key": "AZURE_REGISTRY", "value": login_server}
+    )
+    gl_project.variables.create(
+        {"key": "AZURE_USERNAME", "value": credentials["username"]}
+    )
+    gl_project.variables.create(
         {
-            "AZURE_REGISTRY": login_server,
-            "AZURE_USERNAME": credentials["username"],
-            "AZURE_PASSWORD": credentials["passwords"][0]["value"],
-            "AZURE_REGISTRY_IMAGE": login_server
-            + gl_project.path_with_namespace,
+            "key": "AZURE_PASSWORD",
+            "value": credentials["passwords"][0]["value"],
         }
     )
-    generate_gitlab_yaml(file_name="gitlab-ci-azure.yml", overwrite=True)
+    gl_project.variables.create(
+        {
+            "key": "AZURE_REGISTRY_IMAGE",
+            "value": login_server + "/" + gl_project.path_with_namespace,
+        }
+    )
+    generate_gitlab_yaml(
+        file_name=".gitlab-ci.yml",
+        overwrite=True,
+        template="gitlab-ci-azure.yml",
+    )
