@@ -1,14 +1,14 @@
 import gitlab
 
-from ci_plumber.helpers import get_config_file, get_repo, load_config
+from ci_plumber.helpers import get_config, get_repo
 
 
 def get_gitlab_client() -> gitlab.Gitlab:
     # Load the config
-    current_config, _ = load_config(get_config_file(), get_repo())
+    repo = get_repo()
 
-    gitlab_url = current_config["gitlab_url"]
-    access_token = current_config["access_token"]
+    gitlab_url = get_config(repo, "gitlab_url")
+    access_token = get_config(repo, "access_token")
 
     if "http" not in gitlab_url:
         gl = gitlab.Gitlab("https://" + gitlab_url, private_token=access_token)

@@ -6,11 +6,9 @@ from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
     generate_docker_file,
     generate_gitlab_yaml,
-    get_config_file,
     get_repo,
-    load_config,
-    save_config,
 )
+from ci_plumber.helpers.config_helpers import set_config
 
 
 def init(
@@ -33,33 +31,25 @@ def init(
 ) -> None:
     """Initialises Gitlab: Logs in and determines the gitlab repo to use."""
     typer.echo(typer.style("Initialising", dim=True))
-    # Get the config file
-    config_path: Path = get_config_file()
     remote = get_repo(Path.cwd())
-
-    current_config, config = load_config(config_path, remote)
-
-    current_config["gitlab_url"] = gitlab_url
-    current_config["username"] = username
-    current_config["docker_registry_url"] = docker_registry_url
-    current_config["email"] = email
-    current_config["access_token"] = access_token
-    config["repos"][remote] = current_config
-    save_config(config_path, remote, config)
+    set_config(remote, "gitlab_url", gitlab_url)
+    set_config(remote, "username", username)
+    set_config(remote, "docker_registry_url", docker_registry_url)
+    set_config(remote, "email", email)
+    set_config(remote, "access_token", access_token)
 
     gl = get_gitlab_client()
-
     projects = gl.projects.list(owned=True)
 
     # Try to match the project with remote projects
     matches: bool = False
     for project in projects:
         if project.ssh_url_to_repo == remote:
-            current_config["gitlab_project_id"] = project.id  # ssh matches
+            set_config(remote, "gitlab_project_id", project.id)
             matches = True
             break
         elif project.http_url_to_repo == remote:
-            current_config["gitlab_project_id"] = project.id  # http matches
+            set_config(remote, "gitlab_project_id", project.id)
             matches = True
             break
     if not matches:
@@ -69,7 +59,3 @@ def init(
     # Generate .gitlab-ci.yml
     generate_gitlab_yaml(Path.cwd(), "gitlab-ci.yml")
     generate_docker_file(Path.cwd(), "Dockerfile")
-
-    # Save the config
-    config["repos"][remote] = current_config
-    save_config(config_path, remote, config)

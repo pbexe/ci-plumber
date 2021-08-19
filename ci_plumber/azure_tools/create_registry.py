@@ -7,12 +7,8 @@ import typer
 from rich.console import Console
 
 from ci_plumber.gitlab_tools.auth import get_gitlab_client
-from ci_plumber.helpers import (
-    generate_gitlab_yaml,
-    get_config_file,
-    get_repo,
-    load_config,
-)
+from ci_plumber.helpers import generate_gitlab_yaml, get_repo, set_config
+from ci_plumber.helpers.config_helpers import get_config
 
 
 def create_registry(
@@ -89,11 +85,22 @@ def create_registry(
         # Down with JSON, long live the Python
         credentials = json.loads(credentials_json.stdout)
 
+        repo = get_repo()
+
         console.log("Logging in to Gitlab")
         gl = get_gitlab_client()
-        current_config, _ = load_config(get_config_file(), get_repo())
         console.log("Gettingthe Gitlab project")
-        gl_project = gl.projects.get(current_config["gitlab_project_id"])
+        gl_project = gl.projects.get(get_config(repo, "gitlab_project_id"))
+
+        set_config(repo, "ACI_username", credentials["username"])
+        set_config(repo, "ACI_password", credentials["passwords"][0]["value"])
+        set_config(repo, "ACI_login_server", login_server)
+        set_config(
+            repo,
+            "ACI_image",
+            login_server + "/" + gl_project.path_with_namespace,
+        )
+
         console.log("Creating Azure access keys in Gitlab CI")
         try:
             gl_project.variables.create(

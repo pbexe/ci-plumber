@@ -7,7 +7,12 @@ import typer
 from kubernetes import config
 from openshift.dynamic import DynamicClient
 
-from ci_plumber.helpers import get_config_file, get_repo, load_config
+from ci_plumber.helpers import (
+    get_config,
+    get_config_file,
+    get_repo,
+    load_config,
+)
 
 
 def get_username() -> Any:
@@ -35,20 +40,19 @@ def openshift_deploy(
     """Deploys a project to OpenShift"""
 
     # Load the config
-    config_path: Path = get_config_file()
-    current_config = load_config(config_path, get_repo(Path.cwd()))[0]
-    gitlab_url = current_config["gitlab_url"]
+    repo = get_repo(Path.cwd())
+    gitlab_url = get_config(repo, "gitlab_url")
     # username = current_config["username"]
-    docker_registry_url = current_config["docker_registry_url"]
-    email = current_config["email"]
-    access_token = current_config["access_token"]
+    docker_registry_url = get_config(repo, "docker_registry_url")
+    email = get_config(repo, "email")
+    access_token = get_config(repo, "access_token")
 
     if "http" not in gitlab_url:
         gl = gitlab.Gitlab("https://" + gitlab_url, private_token=access_token)
     else:
         gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
 
-    gl_project = gl.projects.get(current_config["gitlab_project_id"])
+    gl_project = gl.projects.get(get_config(repo, "gitlab_project_id"))
 
     # Login
     subprocess.run(
@@ -240,7 +244,7 @@ def create_database_command(
         check=True,
     )  # nosec
     subprocess.run(["oc", "expose", "service/mariadb"], check=True)  # nosec
-    subprocess.run(["oc", "describe", "routes/mariadb"], check=True)
+    subprocess.run(["oc", "describe", "routes/mariadb"], check=True)  # nosec
 
 
 def create_database() -> None:

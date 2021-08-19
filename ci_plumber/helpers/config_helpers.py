@@ -39,7 +39,8 @@ def load_config(
         remote (str): The remote to use
 
     Returns:
-        tuple[dict[str, Any], dict[str, Any]]: The config and repo data
+        tuple[dict[str, str], dict[str, dict[str, dict[str, str]]]]: The config
+            and repo data.
     """
     config: dict[str, dict[str, dict[str, str]]] = {}
     with config_path.open("r") as fp:
@@ -52,9 +53,7 @@ def load_config(
     return current_config, config
 
 
-def save_config(
-    config_path: Path, remote: str, config: dict[str, Any]
-) -> None:
+def save_config(config_path: Path, config: dict[str, Any]) -> None:
     """Saves the config to the config file
 
     Args:
@@ -64,3 +63,19 @@ def save_config(
     """
     with config_path.open("w") as fp:
         json.dump(config, fp, indent=4)
+
+
+def set_config(remote: str, key: str, value: Any) -> None:
+    """Sets a config value"""
+    config_path: Path = get_config_file()
+    repo_config, config = load_config(config_path, remote)
+    repo_config[key] = value
+    config["repos"][remote] = repo_config
+    save_config(config_path, config)
+
+
+def get_config(remote: str, key: str) -> Any:
+    """Gets a config value"""
+    config_path: Path = get_config_file()
+    repo_config, _ = load_config(config_path, remote)
+    return repo_config[key]
