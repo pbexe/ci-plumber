@@ -98,8 +98,9 @@ def create_registry(
         set_config(
             repo,
             "ACI_image",
-            login_server + "/" + gl_project.path_with_namespace,
+            login_server + "/" + gl_project.path_with_namespace + ":latest",
         )
+        set_config(repo, "ACI_registry_name", registry_name)
 
         console.log("Creating Azure access keys in Gitlab CI")
         try:

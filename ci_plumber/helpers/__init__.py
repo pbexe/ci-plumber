@@ -10,3 +10,4 @@ from ci_plumber.helpers.file_generators import (
     generate_gitlab_yaml,
 )
 from ci_plumber.helpers.git_helpers import get_repo
+from ci_plumber.helpers.run_command import run_command
