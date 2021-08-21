@@ -1,4 +1,5 @@
 import random
+from time import sleep
 
 import typer
 from rich.console import Console
@@ -37,7 +38,7 @@ def create_app(
         registry = get_config(repo, "ACI_image")
 
         # Create the web app with the az webpp create command
-        console.log("Creating web app")
+        console.log("Creating web app. [dim]This may take a while...[/dim]")
         run_command(
             f"az webapp create --resource-group {resource_group} --plan "
             f"{service_plan} --name {app_name} "
@@ -63,6 +64,8 @@ def create_app(
 
         # console.log(f"Subscription ID = {subscription_id}")
 
+        sleep(5)  # I hate this but it works... 🤠
+
         # Grant the managed identity permission to access the container
         # registry
         console.log("Granting permission to access container registry")
@@ -70,7 +73,7 @@ def create_app(
             f"az role assignment create --assignee {principal_id} --scope "
             f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}"
             f"/providers/Microsoft.ContainerRegistry/registries/"
-            f'{get_config(repo, "ACI_registry_name")} --role "AcrPull"'
+            f'{get_config(repo, "ACI_registry_name")} --role AcrPull'
         )
 
         # console.log(permission_grant)
@@ -98,5 +101,7 @@ def create_app(
 
         # console.log(deploy)
 
-        console.log(f"Deployed to https://{app_name}.azurewebsites.net")
-        console.log("It may take a moment to come online")
+        console.log(
+            f"Deployed to https://{app_name.lower()}.azurewebsites.net"
+        )
+        console.log("[dim]It may take a moment to come online")

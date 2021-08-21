@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import typer
+from rich.console import Console
 
 from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
@@ -30,32 +31,45 @@ def init(
     ),
 ) -> None:
     """Initialises Gitlab: Logs in and determines the gitlab repo to use."""
-    typer.echo(typer.style("Initialising", dim=True))
-    remote = get_repo(Path.cwd())
-    set_config(remote, "gitlab_url", gitlab_url)
-    set_config(remote, "username", username)
-    set_config(remote, "docker_registry_url", docker_registry_url)
-    set_config(remote, "email", email)
-    set_config(remote, "access_token", access_token)
+    console = Console()
+    with console.status(
+        "[bold green]Configuring Gitlab...", spinner="clock"
+    ) as _:
+        console.print("Getting remote")
+        remote = get_repo(Path.cwd())
+        set_config(remote, "gitlab_url", gitlab_url)
+        set_config(remote, "username", username)
+        set_config(remote, "docker_registry_url", docker_registry_url)
+        set_config(remote, "email", email)
+        set_config(remote, "access_token", access_token)
 
-    gl = get_gitlab_client()
-    projects = gl.projects.list(owned=True)
+        console.log("Logging in to Gitlab")
+        gl = get_gitlab_client()
+        console.log("Getting projects")
+        projects = gl.projects.list(owned=True)
 
-    # Try to match the project with remote projects
-    matches: bool = False
-    for project in projects:
-        if project.ssh_url_to_repo == remote:
-            set_config(remote, "gitlab_project_id", project.id)
-            matches = True
-            break
-        elif project.http_url_to_repo == remote:
-            set_config(remote, "gitlab_project_id", project.id)
-            matches = True
-            break
-    if not matches:
-        typer.echo(f"{remote} doesn't match")
-        typer.Exit(1)
+        console.log("Matching remote with Gitlab projects")
+        # Try to match the project with remote projects
+        matches: bool = False
+        for project in projects:
+            if project.ssh_url_to_repo == remote:
+                set_config(remote, "gitlab_project_id", project.id)
+                matches = True
+                console.log("Found project: {}".format(project.name))
+                break
+            elif project.http_url_to_repo == remote:
+                set_config(remote, "gitlab_project_id", project.id)
+                matches = True
+                console.log("Found project: {}".format(project.name))
+                break
+        if not matches:
+            console.log(f"[bold red]{remote} doesn't match")
+            typer.Exit(1)
 
-    # Generate .gitlab-ci.yml
-    generate_gitlab_yaml(Path.cwd(), "gitlab-ci.yml")
-    generate_docker_file(Path.cwd(), "Dockerfile")
+        # Generate .gitlab-ci.yml
+        console.log("Generating .gitlab-ci.yml")
+        generate_gitlab_yaml(Path.cwd(), "gitlab-ci.yml")
+        console.log("Generating Dockerfile")
+        generate_docker_file(Path.cwd(), "Dockerfile")
+
+        console.log("[bold green]Gitlab configured!")

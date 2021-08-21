@@ -1,13 +1,17 @@
 import json
 import random
-import subprocess
 
 import gitlab
 import typer
 from rich.console import Console
 
 from ci_plumber.gitlab_tools.auth import get_gitlab_client
-from ci_plumber.helpers import generate_gitlab_yaml, get_repo, set_config
+from ci_plumber.helpers import (
+    generate_gitlab_yaml,
+    get_repo,
+    run_command,
+    set_config,
+)
 from ci_plumber.helpers.config_helpers import get_config
 
 
@@ -37,53 +41,35 @@ def create_registry(
         "[bold green]Deploying the container registry...", spinner="clock"
     ) as _:
         console.log(f"Creating resource group {resource_group_name}")
-        try:
-            subprocess.run(
-                f"az group create --name {resource_group_name} --location "
-                f"{location}".split(),
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-        except subprocess.CalledProcessError:
-            # If the resource group already exists, ignore the error
-            typer.echo("The resource group already exists")
+        run_command(
+            f"az group create --name {resource_group_name} --location "
+            f"{location}"
+        )
 
         # Create the registry
         console.log(f"Creating registry {registry_name}")
-        create_registry_json = subprocess.run(
+        create_registry_json = run_command(
             f"az acr create --resource-group {resource_group_name} --name "
-            f"{registry_name} --sku {sku}".split(),
-            check=True,
-            capture_output=True,
-            text=True,
+            f"{registry_name} --sku {sku}"
         )
 
-        create_registry = json.loads(create_registry_json.stdout)
+        create_registry = json.loads(create_registry_json)
 
         login_server = create_registry["loginServer"]
 
         # Enable the admin user
         console.log("Enabling admin user")
-        subprocess.run(
-            f"az acr update -n {registry_name} --admin-enabled true".split(),
-            check=True,
-            capture_output=True,
-            text=True,
-        )
+        run_command(f"az acr update -n {registry_name} --admin-enabled true")
 
         # Get the admin's credentials
         console.log("Getting admin credentials")
-        credentials_json = subprocess.run(
+        credentials_json = run_command(
             f"az acr credential show --resource-group "
-            f"{resource_group_name} --name {registry_name}".split(),
-            check=True,
-            capture_output=True,
-            text=True,
+            f"{resource_group_name} --name {registry_name}"
         )
 
         # Down with JSON, long live the Python
-        credentials = json.loads(credentials_json.stdout)
+        credentials = json.loads(credentials_json)
 
         repo = get_repo()
 
@@ -129,6 +115,26 @@ def create_registry(
                 "Azure access keys already exist in Gitlab CI for "
                 f"{gl_project.path_with_namespace}"
             )
+            current_AZURE_REGISTRY = gl_project.variables.get("AZURE_REGISTRY")
+            current_AZURE_REGISTRY.value = login_server
+            current_AZURE_REGISTRY.save()
+
+            current_AZURE_USERNAME = gl_project.variables.get("AZURE_USERNAME")
+            current_AZURE_USERNAME.value = credentials["username"]
+            current_AZURE_USERNAME.save()
+
+            current_AZURE_PASSWORD = gl_project.variables.get("AZURE_PASSWORD")
+            current_AZURE_PASSWORD.value = credentials["passwords"][0]["value"]
+            current_AZURE_PASSWORD.save()
+
+            current_AZURE_REGISTRY_IMAGE = gl_project.variables.get(
+                "AZURE_REGISTRY_IMAGE"
+            )
+            current_AZURE_REGISTRY_IMAGE.value = (
+                login_server + "/" + gl_project.path_with_namespace
+            )
+            current_AZURE_REGISTRY_IMAGE.save()
+
         console.log("Creating .gitlab-ci.yml")
         generate_gitlab_yaml(
             file_name=".gitlab-ci.yml",

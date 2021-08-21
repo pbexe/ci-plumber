@@ -2,16 +2,18 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-import gitlab
 import typer
 from kubernetes import config
 from openshift.dynamic import DynamicClient
+from rich.console import Console
 
+from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
     get_config,
     get_config_file,
     get_repo,
     load_config,
+    run_command,
 )
 
 
@@ -38,121 +40,74 @@ def openshift_deploy(
     ),
 ) -> None:
     """Deploys a project to OpenShift"""
+    console = Console()
 
-    # Load the config
-    repo = get_repo(Path.cwd())
-    gitlab_url = get_config(repo, "gitlab_url")
-    # username = current_config["username"]
-    docker_registry_url = get_config(repo, "docker_registry_url")
-    email = get_config(repo, "email")
-    access_token = get_config(repo, "access_token")
+    with console.status(
+        "[bold green]Deploying to Openshift...", spinner="clock"
+    ) as _:
+        # Load the config
+        repo = get_repo(Path.cwd())
+        gitlab_url = get_config(repo, "gitlab_url")
+        # username = current_config["username"]
+        docker_registry_url = get_config(repo, "docker_registry_url")
+        email = get_config(repo, "email")
+        access_token = get_config(repo, "access_token")
 
-    if "http" not in gitlab_url:
-        gl = gitlab.Gitlab("https://" + gitlab_url, private_token=access_token)
-    else:
-        gl = gitlab.Gitlab(gitlab_url, private_token=access_token)
+        console.log("Logginginto GitLab")
+        gl = get_gitlab_client()
 
-    gl_project = gl.projects.get(get_config(repo, "gitlab_project_id"))
+        console.log("Getting the Gitlab project")
+        gl_project = gl.projects.get(get_config(repo, "gitlab_project_id"))
 
-    # Login
-    subprocess.run(
-        ["oc", "login", "-u", username, "-p", password], check=True
-    )  # nosec
+        console.log("Loggin in to Openshift")
+        run_command(f"oc login -u {username} -p {password}")
 
-    # Create a new project
-    subprocess.run(["oc", "new-project", f"{project}"], check=True)  # nosec
+        # Create a new project
+        console.log("Creating a new project")
+        run_command(f"oc new-project {project}")
 
-    subprocess.run(
-        [
-            "oc",
-            "create",
-            "secret",
-            "docker-registry",
-            "gitlab",
-            f"--docker-server={docker_registry_url}",
-            f"--docker-username={username}",
-            f"--docker-password={access_token}",
-            f"--docker-email={email}",
-        ],
-        check=True,
-    )  # nosec
+        console.log("Creating secrets")
+        run_command(
+            "oc create secret docker-registry gitlab "
+            f"--docker-server={docker_registry_url} "
+            f"--docker-username={username} "
+            f"--docker-password={access_token} --docker-email={email}"
+        )
 
-    subprocess.run(
-        ["oc", "secrets", "link", "builder", "gitlab", "--for=pull"],
-        check=True,
-    )  # nosec
-    subprocess.run(
-        ["oc", "secrets", "link", "default", "gitlab", "--for=pull"],
-        check=True,
-    )  # nosec
-    subprocess.run(
-        [
-            "oc",
-            "secrets",
-            "link",
-            "deployer",
-            "gitlab",
-            "--for=pull",
-        ],
-        check=True,
-    )  # nosec
+        run_command("oc secrets link builder gitlab --for=pull")
 
-    subprocess.run(
-        [
-            "oc",
-            "create",
-            "secret",
-            "docker-registry",
-            "gitlab-delegated",
-            f"--docker-server={gitlab_url}",
-            f"--docker-username={username}",
-            f"--docker-password={access_token}",
-            f"--docker-email={email}",
-        ],
-        check=True,
-    )  # nosec
+        run_command("oc secrets link default gitlab --for=pull")
 
-    subprocess.run(
-        ["oc", "secrets", "link", "builder", "gitlab-delegated", "--for=pull"],
-        check=True,
-    )  # nosec
-    subprocess.run(
-        ["oc", "secrets", "link", "default", "gitlab-delegated", "--for=pull"],
-        check=True,
-    )  # nosec
-    subprocess.run(
-        [
-            "oc",
-            "secrets",
-            "link",
-            "deployer",
-            "gitlab-delegated",
-            "--for=pull",
-        ],
-        check=True,
-    )  # nosec
+        run_command("oc secrets link deployer gitlab --for=pull")
 
-    subprocess.run(
-        [
-            "oc",
-            "import-image",
-            f"{gl_project.path}",
-            f"--from={docker_registry_url}/{gl_project.path_with_namespace}",
-            "--scheduled",
-            "--confirm",
-        ],
-        check=True,
-    )  # nosec
+        run_command(
+            "oc create secret docker-registry gitlab-delegated "
+            f"--docker-server={gitlab_url} --docker-username={username} "
+            f"--docker-password={access_token} --docker-email={email}"
+        )
 
-    subprocess.run(
-        ["oc", "new-app", f"{gl_project.path}"], check=True
-    )  # nosec
-    subprocess.run(
-        ["oc", "expose", f"svc/{gl_project.path}"], check=True
-    )  # nosec
-    subprocess.run(
-        ["oc", "describe", f"routes/{gl_project.path}"], check=True
-    )  # nosec
+        run_command("oc secrets link builder gitlab-delegated --for=pull")
+
+        run_command("oc secrets link default gitlab-delegated --for=pull")
+
+        run_command("oc secrets link deployer gitlab-delegated --for=pull")
+
+        console.log("Importing image-stream")
+        run_command(
+            f"oc import-image {gl_project.path} "
+            f"--from={docker_registry_url}/{gl_project.path_with_namespace} "
+            "--scheduled --confirm"
+        )
+
+        console.log("Creating a new app")
+        run_command(f"oc new-app {gl_project.path}")
+
+        console.log("Exposing the service")
+        run_command(f"oc expose svc/{gl_project.path}")
+
+        console.log("Here are the details")
+        # TODO Get the dns out of this
+        console.log(run_command(f"oc describe routes/{gl_project.path}"))
 
 
 def list_projects() -> None:
