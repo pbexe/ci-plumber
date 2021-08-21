@@ -14,6 +14,12 @@ from ci_plumber.helpers import (
     load_config,
     run_command,
 )
+from ci_plumber.openshift_tools.default_generators import (
+    get_access_token,
+    get_docker_registry_url,
+    get_email,
+    get_gitlab_url,
+)
 
 
 def get_username() -> Any:
@@ -37,6 +43,10 @@ def openshift_deploy(
         confirmation_prompt=True,
         hide_input=True,
     ),
+    gitlab_url: str = get_gitlab_url(),
+    docker_registry_url: str = get_docker_registry_url(),
+    email: str = get_email(),
+    access_token: str = get_access_token(),
 ) -> None:
     """Deploys a project to OpenShift"""
     console = Console()
@@ -46,11 +56,6 @@ def openshift_deploy(
     ) as _:
         # Load the config
         repo = get_repo(Path.cwd())
-        gitlab_url = get_config(repo, "gitlab_url")
-        # username = current_config["username"]
-        docker_registry_url = get_config(repo, "docker_registry_url")
-        email = get_config(repo, "email")
-        access_token = get_config(repo, "access_token")
 
         console.log("Logginginto GitLab")
         gl = get_gitlab_client()

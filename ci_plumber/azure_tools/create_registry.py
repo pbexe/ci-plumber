@@ -1,10 +1,15 @@
 import json
 import random
+from enum import Enum
 
 import gitlab
 import typer
 from rich.console import Console
 
+from ci_plumber.azure_tools.default_generators import (
+    Locations,
+    get_resource_group,
+)
 from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
     generate_gitlab_yaml,
@@ -15,26 +20,29 @@ from ci_plumber.helpers import (
 from ci_plumber.helpers.config_helpers import get_config
 
 
+class Skus(str, Enum):
+    """The available SKUs for Azure registries."""
+
+    Basic = "Basic"
+    Standard = "Standard"
+    Premium = "Premium"
+
+
 def create_registry(
     registry_name: str = typer.Option(
         str(random.randint(100_000_000, 999_999_999)),
         help="The name of the registry",
         prompt=True,
     ),
-    resource_group_name: str = typer.Option(
-        ...,
-        help="The name of the resource group to create the registry in.",
-        prompt=True,
-    ),
-    location: str = typer.Option(
-        "uksouth",
+    resource_group_name: str = get_resource_group(),
+    location: Locations = typer.Option(
+        Locations.uksouth,
         help="The name of the location to create the registry in.",
         prompt=True,
     ),
-    sku: str = typer.Option("Basic", help="The SKU of the registry."),
+    sku: Skus = typer.Option(Skus.Basic, help="The SKU of the registry."),
 ) -> None:
     """Create a new Azure Container Registry"""
-
     # Create the resource group
     console = Console()
     with console.status(
@@ -81,6 +89,7 @@ def create_registry(
         set_config(repo, "ACI_username", credentials["username"])
         set_config(repo, "ACI_password", credentials["passwords"][0]["value"])
         set_config(repo, "ACI_login_server", login_server)
+        set_config(repo, "ACI_resource_group", resource_group_name)
         set_config(
             repo,
             "ACI_image",

@@ -4,7 +4,13 @@ from time import sleep
 import typer
 from rich.console import Console
 
-from ci_plumber.helpers import get_config, get_repo, run_command
+from ci_plumber.azure_tools.default_generators import (
+    get_image,
+    get_login_server,
+    get_registry_name,
+    get_resource_group,
+)
+from ci_plumber.helpers import run_command
 
 
 def create_app(
@@ -16,10 +22,11 @@ def create_app(
         help="Application name",
         prompt=True,
     ),
-    resource_group: str = typer.Option(
-        "myResourceGroup", help="Resource group name", prompt=True
-    ),
+    resource_group: str = get_resource_group(),
     os_type: str = typer.Option("linux", help="OS type"),
+    image: str = get_image(),
+    login_server: str = get_login_server(),
+    registry_name: str = get_registry_name(),
 ) -> None:
     """Creates an azure web app"""
     console = Console()
@@ -34,8 +41,9 @@ def create_app(
             f" {resource_group} --is-{os_type}"
         )
         # console.log(create_service_plan)
-        repo = get_repo()
-        registry = get_config(repo, "ACI_image")
+        # repo = get_repo()
+        # registry = get_config(repo, "ACI_image")
+        registry = image
 
         # Create the web app with the az webpp create command
         console.log("Creating web app. [dim]This may take a while...[/dim]")
@@ -73,7 +81,7 @@ def create_app(
             f"az role assignment create --assignee {principal_id} --scope "
             f"/subscriptions/{subscription_id}/resourceGroups/{resource_group}"
             f"/providers/Microsoft.ContainerRegistry/registries/"
-            f'{get_config(repo, "ACI_registry_name")} --role AcrPull'
+            f"{registry_name} --role AcrPull"
         )
 
         # console.log(permission_grant)
@@ -89,7 +97,7 @@ def create_app(
         )
         # console.log(configure_identity)
 
-        login_server = get_config(repo, "ACI_login_server")
+        # login_server = get_config(repo, "ACI_login_server")
         # Use the az webapp config container set command to specify the
         # container registry and the image to deploy for the web app
         console.log("Deploying")
