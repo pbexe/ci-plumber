@@ -44,7 +44,7 @@ def get_email() -> Any:
         )
     except KeyError:
         return typer.Option(
-            "",
+            ...,
             help="The email address to use.",
             prompt=True,
         )
@@ -59,7 +59,7 @@ def get_access_token() -> Any:
         )
     except KeyError:
         return typer.Option(
-            "",
+            ...,
             help="The access token to use.",
             prompt=True,
         )

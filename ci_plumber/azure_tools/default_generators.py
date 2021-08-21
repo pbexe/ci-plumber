@@ -85,7 +85,6 @@ def get_resource_group() -> Any:
         return typer.Option(
             get_config(repo, "ACI_resource_group"),
             help="The name of the resource group to use.",
-            prompt=True,
         )
     except KeyError:
         return typer.Option(

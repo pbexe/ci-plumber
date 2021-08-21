@@ -1,4 +1,5 @@
 import subprocess
+from time import sleep
 
 from rich.console import Console
 from rich.traceback import install
@@ -10,6 +11,7 @@ def run_command(command: str) -> str:
     """
     Runs a command and returns the output.
     """
+    sleep(2)  # Most commands seem to benefit from this delay
     console = Console()
     output = subprocess.run(command.split(), capture_output=True, text=True)
 

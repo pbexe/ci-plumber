@@ -38,7 +38,6 @@ def create_registry(
     location: Locations = typer.Option(
         Locations.uksouth,
         help="The name of the location to create the registry in.",
-        prompt=True,
     ),
     sku: Skus = typer.Option(Skus.Basic, help="The SKU of the registry."),
 ) -> None:
