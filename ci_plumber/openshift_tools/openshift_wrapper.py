@@ -1,4 +1,3 @@
-import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -189,17 +188,12 @@ def create_db_config(
 def create_database_command(
     config_path: Path = (Path.cwd() / "maria.env"),
 ) -> None:
-    subprocess.run(
-        [
-            "oc",
-            "new-app",
-            "--template=openshift/mariadb-persistent",
-            f"--param-file={config_path.resolve()}",
-        ],
-        check=True,
-    )  # nosec
-    subprocess.run(["oc", "expose", "service/mariadb"], check=True)  # nosec
-    subprocess.run(["oc", "describe", "routes/mariadb"], check=True)  # nosec
+    run_command(
+        f"oc new-app --template='openshift/mariadb-persistent' "
+        f"--param-file={config_path.resolve()}"
+    )
+    run_command("oc expose service/mariadb")
+    run_command("oc describe routes/mariadb")
 
 
 def create_database() -> None:
