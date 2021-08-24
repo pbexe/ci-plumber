@@ -40,6 +40,9 @@ def create_registry(
         help="The name of the location to create the registry in.",
     ),
     sku: Skus = typer.Option(Skus.Basic, help="The SKU of the registry."),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Verbose output."
+    ),
 ) -> None:
     """Create a new Azure Container Registry"""
     # Create the resource group
@@ -60,13 +63,21 @@ def create_registry(
             f"{registry_name} --sku {sku}"
         )
 
+        if verbose:
+            console.log(create_registry_json)
+
         create_registry = json.loads(create_registry_json)
 
         login_server = create_registry["loginServer"]
 
         # Enable the admin user
         console.log("Enabling admin user")
-        run_command(f"az acr update -n {registry_name} --admin-enabled true")
+        create_admin = run_command(
+            f"az acr update -n {registry_name} --admin-enabled true"
+        )
+
+        if verbose:
+            console.log(create_admin)
 
         # Get the admin's credentials
         console.log("Getting admin credentials")
@@ -75,10 +86,16 @@ def create_registry(
             f"{resource_group_name} --name {registry_name}"
         )
 
+        if verbose:
+            console.log(credentials_json)
+
         # Down with JSON, long live the Python
         credentials = json.loads(credentials_json)
 
         repo = get_repo()
+
+        if verbose:
+            console.log(f"Repo: {repo}")
 
         console.log("Logging in to Gitlab")
         gl = get_gitlab_client()
