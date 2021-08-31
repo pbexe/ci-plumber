@@ -5,7 +5,7 @@
 ## Installation
 
 ```sh
-pip install ci-plumber
+pip install ci-plumber[all]
 ```
 
 ## Usage
