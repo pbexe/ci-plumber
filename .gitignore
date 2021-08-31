@@ -142,3 +142,4 @@ cython_debug/
 
 .gitlab-ci.yml
 maria.env
+maria.env

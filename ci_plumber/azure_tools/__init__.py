@@ -7,6 +7,7 @@ from ci_plumber.azure_tools.auth import (
 )
 from ci_plumber.azure_tools.create_app import create_app
 from ci_plumber.azure_tools.create_registry import create_registry
+from ci_plumber.azure_tools.database import create_database
 
 app = typer.Typer()
 
@@ -15,6 +16,7 @@ app.command(name="login")(login)
 app.command(name="create-app")(create_app)
 app.command(name="set-default-subscription")(set_default_subscription)
 app.command(name="list-subscriptions")(list_subscriptions)
+app.command(name="create-database")(create_database)
 
 
 @app.callback()

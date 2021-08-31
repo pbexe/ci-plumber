@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from typing import Any
 
@@ -128,7 +129,7 @@ def list_projects() -> None:
         typer.echo(f"{project.metadata.name}")
 
 
-def create_db_config(
+def create_db(
     memory_limit: str = typer.Option(
         "512Mi", help="Maximum amount of memory the container can use."
     ),
@@ -167,39 +168,70 @@ def create_db_config(
         "1Gi", help="Volume space available for data, e.g. 512Mi, 2Gi."
     ),
 ) -> None:
-    # If there isn't a database config file, create one.
-    db_config_file: Path = Path.cwd() / "maria.env"
-    if not db_config_file.exists():
-        db_config_file.touch()
-        with db_config_file.open("w") as fp:
-            fp.writelines(
-                [
-                    f"MEMORY_LIMIT={memory_limit}\n",
-                    f"NAMESPACE={namespace}\n",
-                    f"DATABASE_SERVICE_NAME={database_service_name}\n",
-                    f"MYSQL_USER={mysql_user}\n",
-                    f"MYSQL_PASSWORD={mysql_password}\n",
-                    f"MYSQL_ROOT_PASSWORD={mysql_root_password}\n",
-                    f"MYSQL_DATABASE={mysql_database}\n",
-                    f"MARIADB_VERSION={mariadb_version}\n",
-                    f"VOLUME_CAPACITY={volume_capacity}\n",
-                ]
-            )
-    # TODO Check for duplication in the gitignore file.
-    with (Path.cwd() / ".gitignore").open("a") as fp:
-        fp.write("maria.env\n")
+    console = Console()
 
+    with console.status(
+        "[bold green]Creating the database...", spinner="clock"
+    ):
+        console.log("Creating database config")
+        # If there isn't a database config file, create one.
+        db_config_file: Path = Path.cwd() / ".maria.conf"
+        if not db_config_file.exists():
+            db_config_file.touch()
+            with db_config_file.open("w") as fp:
+                fp.writelines(
+                    [
+                        f"MEMORY_LIMIT={memory_limit}\n",
+                        f"NAMESPACE={namespace}\n",
+                        f"DATABASE_SERVICE_NAME={database_service_name}\n",
+                        f"MYSQL_USER={mysql_user}\n",
+                        f"MYSQL_PASSWORD={mysql_password}\n",
+                        f"MYSQL_ROOT_PASSWORD={mysql_root_password}\n",
+                        f"MYSQL_DATABASE={mysql_database}\n",
+                        f"MARIADB_VERSION={mariadb_version}\n",
+                        f"VOLUME_CAPACITY={volume_capacity}\n",
+                    ]
+                )
+        # TODO Check for duplication in the gitignore file.
+        with (Path.cwd() / ".gitignore").open("a") as fp:
+            fp.write(".maria.conf\n")
 
-def create_database_command(
-    config_path: Path = (Path.cwd() / "maria.env"),
-) -> None:
-    run_command(
-        f"oc new-app --template='openshift/mariadb-persistent' "
-        f"--param-file={config_path.resolve()}"
-    )
-    run_command("oc expose service/mariadb")
-    run_command("oc describe routes/mariadb")
+        with (Path.cwd() / ".gitignore").open("a") as fp:
+            fp.write("maria.env\n")
 
+        console.log(
+            "Creating MariaDB pod from "
+            "[bold]openshift/mariadb-persistent[/bold] template"
+        )
+        run_command(
+            f"oc new-app --template=openshift/mariadb-persistent "
+            f"--param-file={db_config_file.resolve()}"
+        )
 
-def create_database() -> None:
-    create_database_command()
+        console.log("Exposing DB")
+        run_command("oc expose service/mariadb")
+        console.log("Getting DNS")
+        routes = run_command("oc describe routes/mariadb")
+
+        # TODO Use the k8s API instead of this monstrocity.
+        host = re.search(r"Requested Host:[\s]+(\S*)\n", routes)
+
+        console.log("Writing config to [bold]maria.env")
+        if host:
+            dns = host.group(1)
+            db_credentials: Path = Path.cwd() / "maria.env"
+            if not db_credentials.exists():
+                db_credentials.touch()
+                with db_credentials.open("w") as fp:
+                    fp.writelines(
+                        [
+                            f"ADMIN_PASSWORD={mysql_root_password}\n"
+                            f"USER={mysql_user}\n"
+                            f"PASSWORD={mysql_password}\n"
+                            f"NAME={database_service_name}\n"
+                            f"HOST={dns}\n"
+                        ]
+                    )
+        else:
+            console.log("Unable to find DNS, exiting.")
+            typer.Exit(1)

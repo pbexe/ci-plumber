@@ -30,7 +30,7 @@ class Skus(str, Enum):
 
 def create_registry(
     registry_name: str = typer.Option(
-        str(random.randint(100_000_000, 999_999_999)),
+        "registry-" + str(random.randint(100_000_000, 999_999_999)),
         help="The name of the registry",
         prompt=True,
     ),

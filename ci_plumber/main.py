@@ -1,6 +1,10 @@
-import typer
+import importlib.resources
 
-from ci_plumber import azure_tools, gitlab_tools, openshift_tools
+import typer
+from rich.console import Console
+from rich.markdown import Markdown
+
+from ci_plumber import azure_tools, docs, gitlab_tools, openshift_tools
 
 app = typer.Typer()
 app.add_typer(openshift_tools.app, name="openshift")
@@ -13,6 +17,16 @@ def callback() -> None:
     """
     CI Plumber
     """
+
+
+@app.command()
+def readme() -> None:
+    """
+    Show README.md
+    """
+    console = Console()
+    readme = importlib.resources.read_text(docs, "README.md")
+    console.print(Markdown(readme))
 
 
 if __name__ == "__main__":
