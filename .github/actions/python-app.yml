@@ -1,4 +1,4 @@
-name: Python package
+name: python-app
 
 on: [push, workflow_dispatch]
 
