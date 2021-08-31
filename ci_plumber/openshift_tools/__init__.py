@@ -1,12 +1,17 @@
 import typer
 
+from ci_plumber import Module_attribute
 from ci_plumber.openshift_tools.openshift_wrapper import (
     create_db,
     list_projects,
     openshift_deploy,
 )
 
-app = typer.Typer()
+attributes = [Module_attribute.consumer]
+
+name = "openshift"
+
+app: typer.Typer = typer.Typer()
 
 app.command(name="deploy")(openshift_deploy)
 app.command(name="ls")(list_projects)

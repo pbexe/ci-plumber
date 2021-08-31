@@ -1,5 +1,6 @@
 import typer
 
+from ci_plumber import Module_attribute
 from ci_plumber.azure_tools.auth import (
     list_subscriptions,
     login,
@@ -9,7 +10,11 @@ from ci_plumber.azure_tools.create_app import create_app
 from ci_plumber.azure_tools.create_registry import create_registry
 from ci_plumber.azure_tools.database import create_database
 
-app = typer.Typer()
+attributes = [Module_attribute.image_store, Module_attribute.consumer]
+
+name = "gitlab"
+
+app: typer.Typer = typer.Typer()
 
 app.command(name="create-registry")(create_registry)
 app.command(name="login")(login)
