@@ -118,7 +118,7 @@ ci-plumber = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "ci-plumber-openshift"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 category = "main"
 optional = true
@@ -838,10 +838,13 @@ python-versions = ">=3.6"
 docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
+[extras]
+all = ["ci-plumber-openshift", "ci-plumber-gitlab", "ci-plumber-azure"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "1be7abf9012fabd5b94b5258736dfc8e0d72f7a89de83525455a56edd92f7030"
+content-hash = "53f8d116f6b00dbd04c7d692edd1415167d77f5d68608bf762f9b1ee1f8afcc2"
 
 [metadata.files]
 atomicwrites = [
@@ -885,8 +888,8 @@ ci-plumber-gitlab = [
     {file = "ci_plumber_gitlab-0.1.0.tar.gz", hash = "sha256:2039193950eddbdd789800a7230cf91f7250a93f06eaf6477068a50bde3df981"},
 ]
 ci-plumber-openshift = [
-    {file = "ci_plumber_openshift-0.2.0-py3-none-any.whl", hash = "sha256:919f908ac5116e1071c288fec4e0b2640f24945f7e843a9b0ccf0d5369f84232"},
-    {file = "ci_plumber_openshift-0.2.0.tar.gz", hash = "sha256:6112792ff21a98898b7647dd38d0c30d8fe7677485221d407b4e9e3215dad827"},
+    {file = "ci_plumber_openshift-0.3.0-py3-none-any.whl", hash = "sha256:8505272b1075060cd9f1d0dad969ce1037fcf506ea8d8465266df3d5d687c7a2"},
+    {file = "ci_plumber_openshift-0.3.0.tar.gz", hash = "sha256:081c9d0dba8064f8e24e2a0e724653aeb8ccf9f7225b365a5586ac28f52d7db0"},
 ]
 click = [
     {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},

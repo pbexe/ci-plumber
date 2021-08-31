@@ -18,7 +18,7 @@ importlib-metadata = "^4.6.3"
 openshift = "^0.12.1"
 framework-detector = "^0.2.1"
 rich = "^10.7.0"
-ci-plumber-openshift = {version = "^0.2.0", optional = true}
+ci-plumber-openshift = {version = ">=0.2,<0.4", optional = true}
 ci-plumber-gitlab = {version = "^0.1.0", optional = true}
 ci-plumber-azure = {version = "^0.2.0", optional = true}
 
