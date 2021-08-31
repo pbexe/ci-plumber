@@ -3,13 +3,13 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
     generate_docker_file,
     generate_gitlab_yaml,
     get_repo,
 )
 from ci_plumber.helpers.config_helpers import set_config
+from ci_plumber_gitlab.auth import get_gitlab_client
 
 
 def init(

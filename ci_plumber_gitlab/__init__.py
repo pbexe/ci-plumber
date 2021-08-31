@@ -1,7 +1,7 @@
 import typer
 
 from ci_plumber import Module_attribute
-from ci_plumber.gitlab_tools.init import init
+from ci_plumber_gitlab.init import init
 
 attributes = [
     Module_attribute.source_code,

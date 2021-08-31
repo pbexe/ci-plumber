@@ -4,13 +4,13 @@ from time import sleep
 import typer
 from rich.console import Console
 
-from ci_plumber.azure_tools.default_generators import (
+from ci_plumber.helpers import run_command
+from ci_plumber_azure.default_generators import (
     get_image,
     get_login_server,
     get_registry_name,
     get_resource_group,
 )
-from ci_plumber.helpers import run_command
 
 
 def create_app(

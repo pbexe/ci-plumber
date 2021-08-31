@@ -6,11 +6,6 @@ import gitlab
 import typer
 from rich.console import Console
 
-from ci_plumber.azure_tools.default_generators import (
-    Locations,
-    get_resource_group,
-)
-from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
     generate_gitlab_yaml,
     get_repo,
@@ -18,6 +13,8 @@ from ci_plumber.helpers import (
     set_config,
 )
 from ci_plumber.helpers.config_helpers import get_config
+from ci_plumber_azure.default_generators import Locations, get_resource_group
+from ci_plumber_gitlab.auth import get_gitlab_client
 
 
 class Skus(str, Enum):

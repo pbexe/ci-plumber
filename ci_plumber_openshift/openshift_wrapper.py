@@ -7,7 +7,6 @@ from kubernetes import config
 from openshift.dynamic import DynamicClient
 from rich.console import Console
 
-from ci_plumber.gitlab_tools.auth import get_gitlab_client
 from ci_plumber.helpers import (
     get_config,
     get_config_file,
@@ -15,7 +14,8 @@ from ci_plumber.helpers import (
     load_config,
     run_command,
 )
-from ci_plumber.openshift_tools.default_generators import (
+from ci_plumber_gitlab.auth import get_gitlab_client
+from ci_plumber_openshift.default_generators import (
     get_access_token,
     get_docker_registry_url,
     get_email,

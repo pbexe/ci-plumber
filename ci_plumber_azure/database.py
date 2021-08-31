@@ -6,11 +6,8 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from ci_plumber.azure_tools.default_generators import (
-    Locations,
-    get_resource_group,
-)
 from ci_plumber.helpers import run_command
+from ci_plumber_azure.default_generators import Locations, get_resource_group
 
 
 class DatabaseSku(str, Enum):

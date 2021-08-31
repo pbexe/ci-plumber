@@ -6,7 +6,7 @@ import typer
 from rich.console import Console
 from rich.markdown import Markdown
 
-from ci_plumber import azure_tools, docs, gitlab_tools, openshift_tools
+from ci_plumber import docs
 
 # https://packaging.python.org/guides/creating-and-discovering-plugins/
 discovered_plugins = {
@@ -17,9 +17,9 @@ discovered_plugins = {
 
 
 app = typer.Typer()
-app.add_typer(openshift_tools.app, name="openshift")
-app.add_typer(gitlab_tools.app, name="gitlab")
-app.add_typer(azure_tools.app, name="azure")
+# app.add_typer(openshift_tools.app, name="openshift")
+# app.add_typer(gitlab_tools.app, name="gitlab")
+# app.add_typer(azure_tools.app, name="azure")
 
 
 for plugin in discovered_plugins:
