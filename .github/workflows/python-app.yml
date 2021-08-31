@@ -25,8 +25,6 @@ jobs:
         run: poetry --help
       - name: Poetry Install
         run: poetry install
-      - name: Poetry Venv
-        run: poetry shell
       - name: Install Flake8
         run: pip install flake8
       - name: Lint with flake8
@@ -37,6 +35,6 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Run some base commands
         run: |
-          ci-plumber
-          ci-plumber --help
-          ci-plumber azure
+          poetry run ci-plumber
+          poetry run ci-plumber --help
+          poetry run ci-plumber azure
