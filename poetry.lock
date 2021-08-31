@@ -95,6 +95,39 @@ python-versions = ">=3.5.0"
 unicode_backport = ["unicodedata2"]
 
 [[package]]
+name = "ci-plumber-azure"
+version = "0.2.0"
+description = ""
+category = "main"
+optional = true
+python-versions = ">=3.9,<4.0"
+
+[package.dependencies]
+ci-plumber = ">=1.1.0,<2.0.0"
+
+[[package]]
+name = "ci-plumber-gitlab"
+version = "0.1.0"
+description = ""
+category = "main"
+optional = true
+python-versions = ">=3.9,<4.0"
+
+[package.dependencies]
+ci-plumber = ">=1.1.0,<2.0.0"
+
+[[package]]
+name = "ci-plumber-openshift"
+version = "0.2.0"
+description = ""
+category = "main"
+optional = true
+python-versions = ">=3.9,<4.0"
+
+[package.dependencies]
+ci-plumber = ">=1.1.0,<2.0.0"
+
+[[package]]
 name = "click"
 version = "7.1.2"
 description = "Composable command line interface toolkit"
@@ -808,7 +841,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "9bcc75aa78c3f6834afd7f7c9a31cfb664b86768cd2e798c776a4df64448b5ce"
+content-hash = "1be7abf9012fabd5b94b5258736dfc8e0d72f7a89de83525455a56edd92f7030"
 
 [metadata.files]
 atomicwrites = [
@@ -842,6 +875,18 @@ cfgv = [
 charset-normalizer = [
     {file = "charset-normalizer-2.0.4.tar.gz", hash = "sha256:f23667ebe1084be45f6ae0538e4a5a865206544097e4e8bbcacf42cd02a348f3"},
     {file = "charset_normalizer-2.0.4-py3-none-any.whl", hash = "sha256:0c8911edd15d19223366a194a513099a302055a962bca2cec0f54b8b63175d8b"},
+]
+ci-plumber-azure = [
+    {file = "ci_plumber_azure-0.2.0-py3-none-any.whl", hash = "sha256:77793e5996807b417c3eeeb9e66dc4614ecaf93e2ea98ff4e0996e68f28f7bb1"},
+    {file = "ci_plumber_azure-0.2.0.tar.gz", hash = "sha256:eb35358586d2cb497a0d10ffc9d985cfab5f6a30cfb2519848ccc15a5cd64ef9"},
+]
+ci-plumber-gitlab = [
+    {file = "ci_plumber_gitlab-0.1.0-py3-none-any.whl", hash = "sha256:22536f2bfab2b9dac64896b4340e040fde41c9daa3cba3d5bb286e458b3b5d09"},
+    {file = "ci_plumber_gitlab-0.1.0.tar.gz", hash = "sha256:2039193950eddbdd789800a7230cf91f7250a93f06eaf6477068a50bde3df981"},
+]
+ci-plumber-openshift = [
+    {file = "ci_plumber_openshift-0.2.0-py3-none-any.whl", hash = "sha256:919f908ac5116e1071c288fec4e0b2640f24945f7e843a9b0ccf0d5369f84232"},
+    {file = "ci_plumber_openshift-0.2.0.tar.gz", hash = "sha256:6112792ff21a98898b7647dd38d0c30d8fe7677485221d407b4e9e3215dad827"},
 ]
 click = [
     {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},

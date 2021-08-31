@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import typer
+from ci_plumber_gitlab.auth import get_gitlab_client
 from rich.console import Console
 
 from ci_plumber.helpers import (
@@ -9,7 +10,6 @@ from ci_plumber.helpers import (
     get_repo,
 )
 from ci_plumber.helpers.config_helpers import set_config
-from ci_plumber_gitlab.auth import get_gitlab_client
 
 
 def init(

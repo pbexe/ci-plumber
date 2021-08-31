@@ -1,11 +1,11 @@
 import typer
-
-from ci_plumber import Module_attribute
 from ci_plumber_openshift.openshift_wrapper import (
     create_db,
     list_projects,
     openshift_deploy,
 )
+
+from ci_plumber import Module_attribute
 
 attributes = [Module_attribute.consumer]
 

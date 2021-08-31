@@ -1,6 +1,4 @@
 import typer
-
-from ci_plumber import Module_attribute
 from ci_plumber_azure.auth import (
     list_subscriptions,
     login,
@@ -9,6 +7,8 @@ from ci_plumber_azure.auth import (
 from ci_plumber_azure.create_app import create_app
 from ci_plumber_azure.create_registry import create_registry
 from ci_plumber_azure.database import create_database
+
+from ci_plumber import Module_attribute
 
 attributes = [Module_attribute.image_store, Module_attribute.consumer]
 

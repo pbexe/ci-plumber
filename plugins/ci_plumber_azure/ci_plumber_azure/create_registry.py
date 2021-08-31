@@ -4,6 +4,8 @@ from enum import Enum
 
 import gitlab
 import typer
+from ci_plumber_azure.default_generators import Locations, get_resource_group
+from ci_plumber_gitlab.auth import get_gitlab_client
 from rich.console import Console
 
 from ci_plumber.helpers import (
@@ -13,8 +15,6 @@ from ci_plumber.helpers import (
     set_config,
 )
 from ci_plumber.helpers.config_helpers import get_config
-from ci_plumber_azure.default_generators import Locations, get_resource_group
-from ci_plumber_gitlab.auth import get_gitlab_client
 
 
 class Skus(str, Enum):
