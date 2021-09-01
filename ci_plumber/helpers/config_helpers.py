@@ -66,7 +66,13 @@ def save_config(config_path: Path, config: dict[str, Any]) -> None:
 
 
 def set_config(remote: str, key: str, value: Any) -> None:
-    """Sets a config value"""
+    """Sets a config value
+
+    Args:
+        remote (str): The git remote to use
+        key (str): The key for the config value
+        value (Any): The value stored in the key
+    """
     config_path: Path = get_config_file()
     repo_config, config = load_config(config_path, remote)
     repo_config[key] = value
@@ -75,7 +81,15 @@ def set_config(remote: str, key: str, value: Any) -> None:
 
 
 def get_config(remote: str, key: str) -> Any:
-    """Gets a config value"""
+    """Gets a config value
+
+    Args:
+        remote (str): The git remote to use
+        key (str): The key for the config value
+
+    Returns:
+        Any: The value corresponding to the key
+    """
     config_path: Path = get_config_file()
     repo_config, _ = load_config(config_path, remote)
     return repo_config[key]

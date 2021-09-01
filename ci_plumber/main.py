@@ -8,6 +8,7 @@ from rich.markdown import Markdown
 
 from ci_plumber import docs
 
+# Get all of the modules that have the "ci_plumber_" prefix
 # https://packaging.python.org/guides/creating-and-discovering-plugins/
 discovered_plugins = {
     name: importlib.import_module(name)
@@ -15,13 +16,10 @@ discovered_plugins = {
     if name.startswith("ci_plumber_")
 }
 
-
+# Create the main typer app
 app = typer.Typer()
-# app.add_typer(openshift_tools.app, name="openshift")
-# app.add_typer(gitlab_tools.app, name="gitlab")
-# app.add_typer(azure_tools.app, name="azure")
 
-
+# For each of the plugins found, load them as sub-commands into the main app
 for plugin in discovered_plugins:
     # We're going a bit ambiguous here with types so I've just turned mypy off
     try:
@@ -30,7 +28,8 @@ for plugin in discovered_plugins:
             name=discovered_plugins[plugin].name,  # type: ignore
         )
     except AttributeError:
-        pass
+        # It's always a possibility that there was a false positive plugin
+        pass  # shhhh
 
 
 @app.callback()

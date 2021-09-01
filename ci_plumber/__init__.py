@@ -1,3 +1,4 @@
+# Programmatically get module version so that it is always in sync with poetry.
 try:
     import importlib.metadata as importlib_metadata
 except ModuleNotFoundError:

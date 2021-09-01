@@ -37,7 +37,6 @@ def get_repo(git_dir: Path = Path.cwd()) -> str:
     remotes: IterableList[Remote] = repo.remotes
     remote: str = ""
     if len(remotes) == 1:
-        # typer.echo("Found a remote")
         # Get the remote
         remote = remotes[0].url
     else:

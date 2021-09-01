@@ -8,8 +8,13 @@ install(show_locals=True)
 
 
 def run_command(command: str) -> str:
-    """
-    Runs a command and returns the output.
+    """Runs a command and returns the output.
+
+    Args:
+        command (str): The command to run.
+
+    Returns:
+        str: STDOUT of the command.
     """
     sleep(2)  # Most commands seem to benefit from this delay
     console = Console()
