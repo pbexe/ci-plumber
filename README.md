@@ -84,7 +84,10 @@ $ pre-commit autoupdate
 $ pre-commit run --all-files
 
 # Symlink the plugins back to the main project
-$ ln -s ./plugins/example/ci_plumber_example/ ./ci_plumber_example # etc
+$ ln -s ./plugins/example/ci_plumber_example/ ./ci_plumber_example
+$ ln -s ./plugins/gitlab/ci_plumber_gitlab/ ./ci_plumber_gitlab
+$ ln -s ./plugins/openshift/ci_plumber_openshift/ ./ci_plumber_openshift
+$ ln -s ./plugins/azure/ci_plumber_azure/ ./ci_plumber_azure
 ```
 
 ### Features

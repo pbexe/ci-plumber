@@ -1,6 +1,17 @@
-# Typer Template
+# CI Plumber
 
 [![CodeFactor](https://www.codefactor.io/repository/github/pbexe/ci-plumber/badge)](https://www.codefactor.io/repository/github/pbexe/ci-plumber) ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ci-plumber) ![PyPI](https://img.shields.io/pypi/v/ci-plumber) ![PyPI - Downloads](https://img.shields.io/pypi/dm/ci-plumber) [![python-app](https://github.com/pbexe/ci-plumber/actions/workflows/python-app.yml/badge.svg)](https://github.com/pbexe/ci-plumber/actions/workflows/python-app.yml)
+
+A tool to create and configure all of the stages of a CI/CD pipeline.
+
+Current integrations:
+- Gitlab
+- Gitlab pipelines
+- Azure App Service
+- Azure Image Registry
+- Azure MariaDB
+- Openshift
+- Openshift MariaDB
 
 ## Installation
 
@@ -71,6 +82,12 @@ $ poetry shell
 $ pre-commit install
 $ pre-commit autoupdate
 $ pre-commit run --all-files
+
+# Symlink the plugins back to the main project
+$ ln -s ./plugins/example/ci_plumber_example/ ./ci_plumber_example
+$ ln -s ./plugins/gitlab/ci_plumber_gitlab/ ./ci_plumber_gitlab
+$ ln -s ./plugins/openshift/ci_plumber_openshift/ ./ci_plumber_openshift
+$ ln -s ./plugins/azure/ci_plumber_azure/ ./ci_plumber_azure
 ```
 
 ### Features
