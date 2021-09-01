@@ -2,9 +2,6 @@ import subprocess
 from time import sleep
 
 from rich.console import Console
-from rich.traceback import install
-
-install(show_locals=True)
 
 
 def run_command(command: str) -> str:

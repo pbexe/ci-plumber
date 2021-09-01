@@ -1380,6 +1380,17 @@ typer = {version = ">=0.3.2,<0.4.0", extras = ["all"]}
 types-requests = ">=2.25.2,<3.0.0"
 
 [[package]]
+name = "ci-plumber-gitlab"
+version = "0.1.0"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.9,<4.0"
+
+[package.dependencies]
+ci-plumber = ">=1.1.0,<2.0.0"
+
+[[package]]
 name = "click"
 version = "7.1.2"
 description = "Composable command line interface toolkit"
@@ -2274,7 +2285,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "1f52ff6bd67b4774cee4e83342ec1e962f656fcb2979b6d60e83bb37e41c7216"
+content-hash = "4f4d2d21f31f7b57b491599015176942673f20cdc167427a67f495c401b23ff7"
 
 [metadata.files]
 adal = [
@@ -2726,6 +2737,10 @@ chardet = [
 ci-plumber = [
     {file = "ci-plumber-1.1.0.tar.gz", hash = "sha256:d72677ae4aa0b80b119628203af7a33d990bb6bf54f25b69c652427d1f8e2ff5"},
     {file = "ci_plumber-1.1.0-py3-none-any.whl", hash = "sha256:6881cff5f11fd4de9c75e4fa9fd50c34af9e0e046fe18ca622e1cd8e21d4a615"},
+]
+ci-plumber-gitlab = [
+    {file = "ci_plumber_gitlab-0.1.0-py3-none-any.whl", hash = "sha256:22536f2bfab2b9dac64896b4340e040fde41c9daa3cba3d5bb286e458b3b5d09"},
+    {file = "ci_plumber_gitlab-0.1.0.tar.gz", hash = "sha256:2039193950eddbdd789800a7230cf91f7250a93f06eaf6477068a50bde3df981"},
 ]
 click = [
     {file = "click-7.1.2-py2.py3-none-any.whl", hash = "sha256:dacca89f4bfadd5de3d7489b7c8a566eee0d3676333fbb50030263894c38c0dc"},

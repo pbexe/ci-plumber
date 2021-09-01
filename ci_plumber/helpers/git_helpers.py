@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Union
 
-import typer
+# import typer
 from git import InvalidGitRepositoryError, NoSuchPathError, Repo
 from git.remote import Remote
 from git.util import IterableList
@@ -16,27 +17,21 @@ def get_repo(git_dir: Path = Path.cwd()) -> str:
         str: The repo remote
     """
     # Get the repo
+    remotes: Union[IterableList[Remote], None] = None
     try:
         repo: Repo = Repo(git_dir)
-    except (InvalidGitRepositoryError, NoSuchPathError):
-        typer.echo(
-            "This directory is not a Git repository. Please run 'git init'"
-            " first"
-        )
-        typer.Exit(1)
-    # Check it isn't bare
-    try:
         assert not repo.bare
-    except AssertionError:
-        typer.echo(
-            "This directory is not a Git repository. Please run 'git init'"
-            " first"
-        )
-        typer.Exit(1)
-    # Get the remotes
-    remotes: IterableList[Remote] = repo.remotes
+        remotes = repo.remotes
+    except (InvalidGitRepositoryError, NoSuchPathError, AssertionError):
+        # typer.echo(
+        #     "This directory is not a Git repository. Please run 'git init'"
+        #     " first"
+        # )
+        ...
+
+    # Get the remote
     remote: str = ""
-    if len(remotes) == 1:
+    if remotes and len(remotes) == 1:
         # Get the remote
         remote = remotes[0].url
     else:

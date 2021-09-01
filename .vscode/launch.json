@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Sub commands",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/ci_plumber/main.py",
@@ -15,6 +15,15 @@
                 "${input:sub-command}"
             ],
             "cwd": "/home/miles/repos/flask-demo"
+
+        },
+        {
+            "name": "No commands",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/ci_plumber/main.py",
+            "console": "integratedTerminal",
+            "cwd": "/home/miles/repos/"
 
         }
     ],

@@ -82,6 +82,9 @@ $ poetry shell
 $ pre-commit install
 $ pre-commit autoupdate
 $ pre-commit run --all-files
+
+# Symlink the plugins back to the main project
+$ ln -s ./plugins/example/ci_plumber_example/ ./ci_plumber_example # etc
 ```
 
 ### Features
