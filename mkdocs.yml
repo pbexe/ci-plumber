@@ -12,3 +12,7 @@ theme:
 plugins:
   - search
 repo_url: https://github.com/pbexe/ci-plumber
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.keys

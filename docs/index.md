@@ -1,17 +1,13 @@
-# Welcome to MkDocs
+# Welcome to CI Plumber
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+## Installation
 
-## Commands
+Please see the [installation instructions](installation.md).
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+## Basic usage
 
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+- `ci-plumber` - Show all commands
+- `ci-plumber <command>` - Show specific command help
+- `ci-plumber <command> <subcommand> --help` - Show specific subcommand help
+- `ci-plumber gitlab init` - Initialize GitLab CI
+- `ci-plumber openshift deploy` - Deploy to OpenShift from Gitlab
