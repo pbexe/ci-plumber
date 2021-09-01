@@ -9,6 +9,11 @@ theme:
         name: Switch to light mode
   icon:
     logo: material/pipe
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.expand
 plugins:
   - search
 repo_url: https://github.com/pbexe/ci-plumber
@@ -16,3 +21,11 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.keys
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Tutorial: tutorial.md
+  - Plugins:
+    - Gitlab: gitlab.md
+    - OpenShift: openshift.md
+    - Azure: azure.md
