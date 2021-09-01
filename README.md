@@ -13,6 +13,8 @@ Current integrations:
 - Openshift
 - Openshift MariaDB
 
+Full documentation is available [here](https://milesbudden.com/ci-plumber/).
+
 ## Installation
 
 ```sh

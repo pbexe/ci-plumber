@@ -14,6 +14,7 @@ theme:
     - navigation.tracking
     - navigation.top
     - navigation.expand
+    - content.code.annotate
 plugins:
   - search
 repo_url: https://github.com/pbexe/ci-plumber
