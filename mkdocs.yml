@@ -2,7 +2,13 @@ site_name: CI Plumber
 theme:
   name: material
   palette:
-        primary: 'black'
-        accent: 'teal'
+      scheme: slate
+      primary: lime
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
   icon:
     logo: material/pipe
+plugins:
+  - search
+repo_url: https://github.com/pbexe/ci-plumber
