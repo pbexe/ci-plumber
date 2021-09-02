@@ -12,14 +12,14 @@
 ## Installation
 
 
-```sh
-# Install CI Plumber as well as all of the modules:
-pip install ci-plumber[all]
+```console
+// Install CI Plumber as well as all of the modules:
+$ pip install ci-plumber[all]
 
-# You can also install individual modules instead of the entire package:
-pip install ci-plumber
-pip install ci-plumber-azure
+// You can also install individual modules instead of the entire package:
+$ pip install ci-plumber
+$ pip install ci-plumber-azure
 
-# Once installed, you can add tab completion:
-ci-plumber --install-completion
+// Once installed, you can add tab completion:
+$ ci-plumber --install-completion
 ```
