@@ -1,6 +1,6 @@
 ## Gitlab + Openshift
 
-First we need to initialise the project. All of the commands can wither be run interactively or using the CLI options. For this tutorial we shall be using the interactive mode.
+First we need to initialise the project. All of the commands can either be run interactively or using the CLI options. For this tutorial we shall be using the interactive mode.
 
 ```console
 $ ci-plumber gitlab init
@@ -26,7 +26,7 @@ This command will do several things:
 3. It will then try to find the project that you are working on on Gitlab.
 4. It will then Genrate the .gitlab-ci.yml file and the Dockerfile if approprate for the project.
 
-Once Gitlab is set up, we can set up the Openshift project. Openshift should pick up on the credentials left by <ci-plumber gitlab init`. We can deploy the app to Openshift using the following command:
+Once Gitlab is set up, we can set up the Openshift project. Openshift should pick up on the credentials left by `ci-plumber gitlab init`. We can deploy the app to Openshift using the following command:
 
 ```console
 // Make sure you are logged in to Openshift
