@@ -3,13 +3,6 @@ from pathlib import Path
 from typing import Any
 
 import typer
-from ci_plumber_gitlab.auth import get_gitlab_client
-from ci_plumber_openshift.default_generators import (
-    get_access_token,
-    get_docker_registry_url,
-    get_email,
-    get_gitlab_url,
-)
 from kubernetes import config
 from openshift.dynamic import DynamicClient
 from rich.console import Console
@@ -20,6 +13,13 @@ from ci_plumber.helpers import (
     get_repo,
     load_config,
     run_command,
+)
+from ci_plumber_gitlab.auth import get_gitlab_client
+from ci_plumber_openshift.default_generators import (
+    get_access_token,
+    get_docker_registry_url,
+    get_email,
+    get_gitlab_url,
 )
 
 
@@ -62,7 +62,7 @@ def openshift_deploy(
         gl = get_gitlab_client()
 
         console.log("Getting the Gitlab project")
-        gl_project = gl.projects.get(get_config(repo, "gitlab_project_id"))
+        gl_project = gl.projects.get(get_config(repo, "gitlab.project_id"))
 
         console.log("Loggin in to Openshift")
         run_command(f"oc login -u {username} -p {password}")

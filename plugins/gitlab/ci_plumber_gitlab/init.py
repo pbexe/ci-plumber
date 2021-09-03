@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import typer
-from ci_plumber_gitlab.auth import get_gitlab_client
 from rich.console import Console
 
 from ci_plumber.helpers import (
@@ -10,6 +9,7 @@ from ci_plumber.helpers import (
     get_repo,
 )
 from ci_plumber.helpers.config_helpers import set_config
+from ci_plumber_gitlab.auth import get_gitlab_client
 
 
 def init(
@@ -37,11 +37,11 @@ def init(
     ) as _:
         console.print("Getting remote")
         remote = get_repo(Path.cwd())
-        set_config(remote, "gitlab_url", gitlab_url)
-        set_config(remote, "username", username)
-        set_config(remote, "docker_registry_url", docker_registry_url)
-        set_config(remote, "email", email)
-        set_config(remote, "access_token", access_token)
+        set_config(remote, "gitlab.url", gitlab_url)
+        set_config(remote, "gitlab.username", username)
+        set_config(remote, "registry.url", docker_registry_url)
+        set_config(remote, "gitlab.email", email)
+        set_config(remote, "gitlab.access_token", access_token)
 
         console.log("Logging in to Gitlab")
         gl = get_gitlab_client()
@@ -53,12 +53,12 @@ def init(
         matches: bool = False
         for project in projects:
             if project.ssh_url_to_repo == remote:
-                set_config(remote, "gitlab_project_id", project.id)
+                set_config(remote, "gitlab.project_id", project.id)
                 matches = True
                 console.log("Found project: {}".format(project.name))
                 break
             elif project.http_url_to_repo == remote:
-                set_config(remote, "gitlab_project_id", project.id)
+                set_config(remote, "gitlab.project_id", project.id)
                 matches = True
                 console.log("Found project: {}".format(project.name))
                 break

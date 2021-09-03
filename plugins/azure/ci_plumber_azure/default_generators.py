@@ -83,7 +83,7 @@ def get_resource_group() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "ACI_resource_group"),
+            get_config(repo, "azure.ACI_resource_group"),
             help="The name of the resource group to use.",
         )
     except KeyError:
@@ -98,7 +98,8 @@ def get_image() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "ACI_image"), help="The name of the image to use."
+            get_config(repo, "azure.ACI_image"),
+            help="The name of the image to use.",
         )
     except KeyError:
         return typer.Option(
@@ -112,7 +113,7 @@ def get_login_server() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "ACI_login_server"),
+            get_config(repo, "azure.ACI_login_server"),
             help="The name of the login server to use.",
         )
     except KeyError:
@@ -127,7 +128,7 @@ def get_registry_name() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "ACI_registry_name"),
+            get_config(repo, "azure.ACI_registry_name"),
             help="The name of the registry to use.",
         )
     except KeyError:

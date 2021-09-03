@@ -9,7 +9,7 @@ def get_gitlab_url() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "gitlab_url"),
+            get_config(repo, "gitlab.url"),
             help="The URL of the GitLab instance.",
         )
     except KeyError:
@@ -24,7 +24,7 @@ def get_docker_registry_url() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "docker_registry_url"),
+            get_config(repo, "registry.url"),
             help="The URL of the Docker registry.",
         )
     except KeyError:
@@ -39,7 +39,7 @@ def get_email() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "email"),
+            get_config(repo, "gitlab.email"),
             help="The email address to use.",
         )
     except KeyError:
@@ -54,7 +54,7 @@ def get_access_token() -> Any:
     try:
         repo = get_repo()
         return typer.Option(
-            get_config(repo, "access_token"),
+            get_config(repo, "gitlab.access_token"),
             help="The access token to use.",
         )
     except KeyError:

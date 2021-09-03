@@ -4,8 +4,6 @@ from enum import Enum
 
 import gitlab
 import typer
-from ci_plumber_azure.default_generators import Locations, get_resource_group
-from ci_plumber_gitlab.auth import get_gitlab_client
 from rich.console import Console
 
 from ci_plumber.helpers import (
@@ -15,6 +13,8 @@ from ci_plumber.helpers import (
     set_config,
 )
 from ci_plumber.helpers.config_helpers import get_config
+from ci_plumber_azure.default_generators import Locations, get_resource_group
+from ci_plumber_gitlab.auth import get_gitlab_client
 
 
 class Skus(str, Enum):
@@ -97,18 +97,20 @@ def create_registry(
         console.log("Logging in to Gitlab")
         gl = get_gitlab_client()
         console.log("Gettingthe Gitlab project")
-        gl_project = gl.projects.get(get_config(repo, "gitlab_project_id"))
+        gl_project = gl.projects.get(get_config(repo, "gitlab.project_id"))
 
-        set_config(repo, "ACI_username", credentials["username"])
-        set_config(repo, "ACI_password", credentials["passwords"][0]["value"])
-        set_config(repo, "ACI_login_server", login_server)
-        set_config(repo, "ACI_resource_group", resource_group_name)
+        set_config(repo, "azure.ACI_username", credentials["username"])
+        set_config(
+            repo, "azure.ACI_password", credentials["passwords"][0]["value"]
+        )
+        set_config(repo, "azure.ACI_login_server", login_server)
+        set_config(repo, "azure.ACI_resource_group", resource_group_name)
         set_config(
             repo,
-            "ACI_image",
+            "azure.ACI_image",
             login_server + "/" + gl_project.path_with_namespace + ":latest",
         )
-        set_config(repo, "ACI_registry_name", registry_name)
+        set_config(repo, "azure.ACI_registry_name", registry_name)
 
         console.log("Creating Azure access keys in Gitlab CI")
         try:
