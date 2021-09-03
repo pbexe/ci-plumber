@@ -23,6 +23,8 @@ markdown_extensions:
   - pymdownx.keys
   - admonition
   - pymdownx.superfences
+  - pymdownx.details
+
 nav:
   - Home: index.md
   - Installation: installation.md

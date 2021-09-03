@@ -5,6 +5,7 @@ import pkgutil
 import typer
 from rich.console import Console
 from rich.markdown import Markdown
+from rich.traceback import install
 
 from ci_plumber import docs
 
@@ -15,6 +16,9 @@ discovered_plugins = {
     for finder, name, ispkg in pkgutil.iter_modules()
     if name.startswith("ci_plumber_")
 }
+
+install(show_locals=True)
+
 
 # Create the main typer app
 app = typer.Typer()

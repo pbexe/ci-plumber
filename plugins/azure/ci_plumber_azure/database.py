@@ -4,10 +4,10 @@ from enum import Enum
 from pathlib import Path
 
 import typer
-from ci_plumber_azure.default_generators import Locations, get_resource_group
 from rich.console import Console
 
 from ci_plumber.helpers import run_command
+from ci_plumber_azure.default_generators import Locations, get_resource_group
 
 
 class DatabaseSku(str, Enum):
@@ -119,7 +119,7 @@ def create_database(
 
         console.log("Created Database")
         console.log("The credentials have been written to [bold]maria.env")
-        console.log(credentials)
+        # console.log(credentials)
 
         # If there isn't a database config file, create one.
         db_config_file: Path = Path.cwd() / "maria.env"
