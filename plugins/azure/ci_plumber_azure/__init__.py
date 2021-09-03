@@ -1,4 +1,6 @@
 import typer
+
+from ci_plumber import Module_attribute
 from ci_plumber_azure.auth import (
     list_subscriptions,
     login,
@@ -8,8 +10,6 @@ from ci_plumber_azure.create_app import create_app
 from ci_plumber_azure.create_registry import create_registry
 from ci_plumber_azure.database import create_database
 
-from ci_plumber import Module_attribute
-
 attributes = [Module_attribute.image_store, Module_attribute.consumer]
 
 name = "azure"
@@ -18,10 +18,10 @@ app: typer.Typer = typer.Typer()
 
 app.command(name="create-registry")(create_registry)
 app.command(name="login")(login)
-app.command(name="create-app")(create_app)
+app.command(name="deploy")(create_app)
 app.command(name="set-default-subscription")(set_default_subscription)
 app.command(name="list-subscriptions")(list_subscriptions)
-app.command(name="create-database")(create_database)
+app.command(name="create-db")(create_database)
 
 
 @app.callback()

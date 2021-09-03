@@ -147,3 +147,6 @@ ci_plumber_gitlab
 ci_plumber_openshift
 ci_plumber_azure
 ci_plumber_example
+
+*.build/
+*.dist/

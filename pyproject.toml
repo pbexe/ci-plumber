@@ -46,6 +46,7 @@ black = {version = "^21.6b0", allow-prereleases = true}
 mypy = "^0.910"
 pyinstaller = "^4.5.1"
 mkdocs-material = "^7.2.6"
+Nuitka = "^0.6.16"
 
 
 [build-system]

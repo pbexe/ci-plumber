@@ -481,6 +481,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "nuitka"
+version = "0.6.16.4"
+description = "Python compiler with full language support and CPython compatibility"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "oauthlib"
 version = "3.1.1"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
@@ -1032,7 +1040,7 @@ all = ["ci-plumber-openshift", "ci-plumber-gitlab", "ci-plumber-azure"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "0e2ee42385525bf9b2cab6ba7731f4b2610389b7ae2f572d6ebfd12db48db465"
+content-hash = "a39b981e32bb983371a14a3ae60d90fbbb82df45b9dea290e40cc418ecc5f7c7"
 
 [metadata.files]
 altgraph = [
@@ -1323,6 +1331,9 @@ mypy-extensions = [
 nodeenv = [
     {file = "nodeenv-1.6.0-py2.py3-none-any.whl", hash = "sha256:621e6b7076565ddcacd2db0294c0381e01fd28945ab36bcf00f41c5daf63bef7"},
     {file = "nodeenv-1.6.0.tar.gz", hash = "sha256:3ef13ff90291ba2a4a7a4ff9a979b63ffdd00a464dbe04acf0ea6471517a4c2b"},
+]
+nuitka = [
+    {file = "Nuitka-0.6.16.4.tar.gz", hash = "sha256:986d8c46a3db9f27e0d28817413715bdd9dfb6ad97770ba0d1b51b4b0a028538"},
 ]
 oauthlib = [
     {file = "oauthlib-3.1.1-py2.py3-none-any.whl", hash = "sha256:42bf6354c2ed8c6acb54d971fce6f88193d97297e18602a3a886603f9d7730cc"},
