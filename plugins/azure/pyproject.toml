@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ci_plumber_azure"
-version = "0.2.2"
+version = "0.2.3"
 description = ""
 authors = ["Miles Budden <git@miles.so>"]
 
