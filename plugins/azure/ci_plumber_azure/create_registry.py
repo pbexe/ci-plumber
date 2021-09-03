@@ -97,20 +97,20 @@ def create_registry(
         console.log("Logging in to Gitlab")
         gl = get_gitlab_client()
         console.log("Gettingthe Gitlab project")
-        gl_project = gl.projects.get(get_config(repo, "gitlab.project_id"))
+        gl_project = gl.projects.get(get_config(repo, "code_store.project_id"))
 
-        set_config(repo, "azure.ACI_username", credentials["username"])
+        set_config(repo, "registry.username", credentials["username"])
         set_config(
-            repo, "azure.ACI_password", credentials["passwords"][0]["value"]
+            repo, "registry.password", credentials["passwords"][0]["value"]
         )
-        set_config(repo, "azure.ACI_login_server", login_server)
-        set_config(repo, "azure.ACI_resource_group", resource_group_name)
+        set_config(repo, "registry.url", login_server)
+        set_config(repo, "registry.resource_group", resource_group_name)
         set_config(
             repo,
-            "azure.ACI_image",
+            "registry.image",
             login_server + "/" + gl_project.path_with_namespace + ":latest",
         )
-        set_config(repo, "azure.ACI_registry_name", registry_name)
+        set_config(repo, "registry.name", registry_name)
 
         console.log("Creating Azure access keys in Gitlab CI")
         try:

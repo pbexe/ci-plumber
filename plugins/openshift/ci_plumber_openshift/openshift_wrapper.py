@@ -62,7 +62,7 @@ def openshift_deploy(
         gl = get_gitlab_client()
 
         console.log("Getting the Gitlab project")
-        gl_project = gl.projects.get(get_config(repo, "gitlab.project_id"))
+        gl_project = gl.projects.get(get_config(repo, "code_store.project_id"))
 
         console.log("Loggin in to Openshift")
         run_command(f"oc login -u {username} -p {password}")
@@ -112,7 +112,13 @@ def openshift_deploy(
 
         console.log("Here are the details")
         # TODO Get the dns out of this
-        console.log(run_command(f"oc describe routes/{gl_project.path}"))
+        routes = run_command(f"oc describe routes/{gl_project.path}")
+        host = re.search(r"Requested Host:[\s]+(\S*)\n", routes)
+        if host:
+            console.log(f"Host: {host.group(1)}")
+        else:
+            console.log("No host found")
+            console.log(routes)
 
 
 def list_projects() -> None:

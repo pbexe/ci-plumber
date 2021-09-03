@@ -37,11 +37,15 @@ def init(
     ) as _:
         console.print("Getting remote")
         remote = get_repo(Path.cwd())
-        set_config(remote, "gitlab.url", gitlab_url)
-        set_config(remote, "gitlab.username", username)
+        set_config(remote, "code_store.url", gitlab_url)
+        set_config(remote, "code_store.username", username)
+        set_config(remote, "registry.username", username)
         set_config(remote, "registry.url", docker_registry_url)
-        set_config(remote, "gitlab.email", email)
-        set_config(remote, "gitlab.access_token", access_token)
+        set_config(remote, "code_store.email", email)
+        set_config(remote, "registry.email", email)
+        set_config(remote, "code_store.access_token", access_token)
+        set_config(remote, "registry.password", access_token)
+        set_config(remote, "code_store.type", "gitlab")
 
         console.log("Logging in to Gitlab")
         gl = get_gitlab_client()
@@ -53,12 +57,12 @@ def init(
         matches: bool = False
         for project in projects:
             if project.ssh_url_to_repo == remote:
-                set_config(remote, "gitlab.project_id", project.id)
+                set_config(remote, "code_store.project_id", project.id)
                 matches = True
                 console.log("Found project: {}".format(project.name))
                 break
             elif project.http_url_to_repo == remote:
-                set_config(remote, "gitlab.project_id", project.id)
+                set_config(remote, "code_store.project_id", project.id)
                 matches = True
                 console.log("Found project: {}".format(project.name))
                 break
