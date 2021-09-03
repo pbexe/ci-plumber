@@ -112,7 +112,7 @@ def create_registry(
         )
         set_config(repo, "registry.name", registry_name)
 
-        console.log("Creating Azure access keys in Gitlab CI")
+        console.log("Creating Azure access keys in CI")
         try:
             gl_project.variables.create(
                 {"key": "AZURE_REGISTRY", "value": login_server}
