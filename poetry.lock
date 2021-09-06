@@ -115,14 +115,11 @@ ci-plumber = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "ci-plumber-gitlab"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 category = "main"
 optional = true
 python-versions = ">=3.9,<4.0"
-
-[package.dependencies]
-ci-plumber = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "ci-plumber-openshift"
@@ -1084,8 +1081,8 @@ ci-plumber-azure = [
     {file = "ci_plumber_azure-0.2.0.tar.gz", hash = "sha256:eb35358586d2cb497a0d10ffc9d985cfab5f6a30cfb2519848ccc15a5cd64ef9"},
 ]
 ci-plumber-gitlab = [
-    {file = "ci_plumber_gitlab-0.1.1-py3-none-any.whl", hash = "sha256:81cac1db32109495bfc656a38f64d418d042cbcef4695d73740dce0fefc7abf5"},
-    {file = "ci_plumber_gitlab-0.1.1.tar.gz", hash = "sha256:4e0d47cdd5640ec4d4508821815232b65e8f760ee736ba4b99a487d4b244abf5"},
+    {file = "ci_plumber_gitlab-0.1.2-py3-none-any.whl", hash = "sha256:b818a2ec1bc14eb2162762541faf3a058657908da3191742118ebb8bc7ec9864"},
+    {file = "ci_plumber_gitlab-0.1.2.tar.gz", hash = "sha256:84f3be314be6e349e2486eb24169880fac75fc159e218c4eabcf0456af1cc74a"},
 ]
 ci-plumber-openshift = [
     {file = "ci_plumber_openshift-0.2.0-py3-none-any.whl", hash = "sha256:919f908ac5116e1071c288fec4e0b2640f24945f7e843a9b0ccf0d5369f84232"},
