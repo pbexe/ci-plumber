@@ -104,14 +104,11 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "ci-plumber-azure"
-version = "0.2.0"
+version = "0.2.3"
 description = ""
 category = "main"
 optional = true
 python-versions = ">=3.9,<4.0"
-
-[package.dependencies]
-ci-plumber = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "ci-plumber-gitlab"
@@ -1080,8 +1077,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.4-py3-none-any.whl", hash = "sha256:0c8911edd15d19223366a194a513099a302055a962bca2cec0f54b8b63175d8b"},
 ]
 ci-plumber-azure = [
-    {file = "ci_plumber_azure-0.2.0-py3-none-any.whl", hash = "sha256:77793e5996807b417c3eeeb9e66dc4614ecaf93e2ea98ff4e0996e68f28f7bb1"},
-    {file = "ci_plumber_azure-0.2.0.tar.gz", hash = "sha256:eb35358586d2cb497a0d10ffc9d985cfab5f6a30cfb2519848ccc15a5cd64ef9"},
+    {file = "ci_plumber_azure-0.2.3-py3-none-any.whl", hash = "sha256:d5b2cf3cf4a8ffdabd9a3392dec7d40c0ab6bf423a496a1e28e487fb771eade4"},
+    {file = "ci_plumber_azure-0.2.3.tar.gz", hash = "sha256:94eb0e3d14d61b880787d9260a2c665399c3bcac50e2d4e142bdba38b5430854"},
 ]
 ci-plumber-gitlab = [
     {file = "ci_plumber_gitlab-0.1.1-py3-none-any.whl", hash = "sha256:81cac1db32109495bfc656a38f64d418d042cbcef4695d73740dce0fefc7abf5"},
