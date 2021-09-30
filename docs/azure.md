@@ -18,7 +18,8 @@ Commands:
   list-subscriptions        List Azure subscriptions.
   login                     Log in to Azure using Azure CLI.
   set-default-subscription  Set default subscription.
-  ```
+```
+
 ### Creating a Database
 
 ```console
@@ -80,6 +81,7 @@ Options:
 ```
 
 ### Creating a Registry
+
 ```console
 Usage: ci-plumber azure create-registry [OPTIONS]
 
