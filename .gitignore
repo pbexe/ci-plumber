@@ -143,10 +143,10 @@ cython_debug/
 .gitlab-ci.yml
 maria.env
 maria.env
-ci_plumber_gitlab
-ci_plumber_openshift
-ci_plumber_azure
-ci_plumber_example
+/ci_plumber_gitlab
+/ci_plumber_openshift
+/ci_plumber_azure
+/ci_plumber_example
 
 *.build/
 *.dist/

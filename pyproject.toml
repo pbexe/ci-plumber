@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ci-plumber"
-version = "1.4.0"
+version = "1.4.1"
 description = "Plumb together different CI/CD services"
 authors = ["Miles Budden <git@miles.so>"]
 readme = "README.md"
@@ -40,9 +40,9 @@ all = ["ci-plumber-openshift", "ci-plumber-gitlab", "ci-plumber-azure"]
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 pytest-cov = "^2.12.1"
-pre-commit = "^2.13.0"
+pre-commit = "^2.15.0"
 flake8 = "^3.9.2"
-black = {version = "^21.6b0", allow-prereleases = true}
+black = {version = "^21.9b0", allow-prereleases = true}
 mypy = "^0.910"
 pyinstaller = "^4.5.1"
 mkdocs-material = "^7.2.6"

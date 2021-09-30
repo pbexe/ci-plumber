@@ -42,7 +42,7 @@ testing = ["pytest (>=4.6)", "pytest-flake8", "pytest-cov", "pytest-black (>=0.3
 
 [[package]]
 name = "black"
-version = "21.8b0"
+version = "21.9b0"
 description = "The uncompromising code formatter."
 category = "dev"
 optional = false
@@ -104,14 +104,11 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "ci-plumber-azure"
-version = "0.2.0"
+version = "0.2.3"
 description = ""
 category = "main"
 optional = true
 python-versions = ">=3.9,<4.0"
-
-[package.dependencies]
-ci-plumber = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "ci-plumber-gitlab"
@@ -245,11 +242,11 @@ smmap = ">=3.0.1,<5"
 
 [[package]]
 name = "gitpython"
-version = "3.1.20"
-description = "Python Git Library"
+version = "3.1.24"
+description = "GitPython is a python library used to interact with Git repositories"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
@@ -571,7 +568,7 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "pre-commit"
-version = "2.14.1"
+version = "2.15.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
@@ -1040,7 +1037,7 @@ all = ["ci-plumber-openshift", "ci-plumber-gitlab", "ci-plumber-azure"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a39b981e32bb983371a14a3ae60d90fbbb82df45b9dea290e40cc418ecc5f7c7"
+content-hash = "341f6c4fb3416d28a63b67e7711399e05016f88db9bb7f228916c85284ddeb73"
 
 [metadata.files]
 altgraph = [
@@ -1060,8 +1057,8 @@ attrs = [
     {file = "backports.entry_points_selectable-1.1.0.tar.gz", hash = "sha256:988468260ec1c196dab6ae1149260e2f5472c9110334e5d51adcb77867361f6a"},
 ]
 black = [
-    {file = "black-21.8b0-py3-none-any.whl", hash = "sha256:2a0f9a8c2b2a60dbcf1ccb058842fb22bdbbcb2f32c6cc02d9578f90b92ce8b7"},
-    {file = "black-21.8b0.tar.gz", hash = "sha256:570608d28aa3af1792b98c4a337dbac6367877b47b12b88ab42095cfc1a627c2"},
+    {file = "black-21.9b0-py3-none-any.whl", hash = "sha256:380f1b5da05e5a1429225676655dddb96f5ae8c75bdf91e53d798871b902a115"},
+    {file = "black-21.9b0.tar.gz", hash = "sha256:7de4cfc7eb6b710de325712d40125689101d21d25283eed7e9998722cf10eb91"},
 ]
 cachetools = [
     {file = "cachetools-4.2.2-py3-none-any.whl", hash = "sha256:2cc0b89715337ab6dbba85b5b50effe2b0c74e035d83ee8ed637cf52f12ae001"},
@@ -1080,8 +1077,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.4-py3-none-any.whl", hash = "sha256:0c8911edd15d19223366a194a513099a302055a962bca2cec0f54b8b63175d8b"},
 ]
 ci-plumber-azure = [
-    {file = "ci_plumber_azure-0.2.0-py3-none-any.whl", hash = "sha256:77793e5996807b417c3eeeb9e66dc4614ecaf93e2ea98ff4e0996e68f28f7bb1"},
-    {file = "ci_plumber_azure-0.2.0.tar.gz", hash = "sha256:eb35358586d2cb497a0d10ffc9d985cfab5f6a30cfb2519848ccc15a5cd64ef9"},
+    {file = "ci_plumber_azure-0.2.3-py3-none-any.whl", hash = "sha256:d5b2cf3cf4a8ffdabd9a3392dec7d40c0ab6bf423a496a1e28e487fb771eade4"},
+    {file = "ci_plumber_azure-0.2.3.tar.gz", hash = "sha256:94eb0e3d14d61b880787d9260a2c665399c3bcac50e2d4e142bdba38b5430854"},
 ]
 ci-plumber-gitlab = [
     {file = "ci_plumber_gitlab-0.1.1-py3-none-any.whl", hash = "sha256:81cac1db32109495bfc656a38f64d418d042cbcef4695d73740dce0fefc7abf5"},
@@ -1184,8 +1181,8 @@ gitdb = [
     {file = "gitdb-4.0.7.tar.gz", hash = "sha256:96bf5c08b157a666fec41129e6d327235284cca4c81e92109260f353ba138005"},
 ]
 gitpython = [
-    {file = "GitPython-3.1.20-py3-none-any.whl", hash = "sha256:b1e1c269deab1b08ce65403cf14e10d2ef1f6c89e33ea7c5e5bb0222ea593b8a"},
-    {file = "GitPython-3.1.20.tar.gz", hash = "sha256:df0e072a200703a65387b0cfdf0466e3bab729c0458cf6b7349d0e9877636519"},
+    {file = "GitPython-3.1.24-py3-none-any.whl", hash = "sha256:dc0a7f2f697657acc8d7f89033e8b1ea94dd90356b2983bca89dc8d2ab3cc647"},
+    {file = "GitPython-3.1.24.tar.gz", hash = "sha256:df83fdf5e684fef7c6ee2c02fc68a5ceb7e7e759d08b694088d0cacb4eba59e5"},
 ]
 google-auth = [
     {file = "google-auth-2.0.1.tar.gz", hash = "sha256:ea1af050b3e06eb73e4470f704d23007307bc0e87c13e015f6b90460f1407bd3"},
@@ -1362,8 +1359,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.14.1-py2.py3-none-any.whl", hash = "sha256:a22d12a02da4d8df314187dfe7a61bda6291d57992060522feed30c8cd658b68"},
-    {file = "pre_commit-2.14.1.tar.gz", hash = "sha256:7977a3103927932d4823178cbe4719ab55bb336f42a9f3bb2776cff99007a117"},
+    {file = "pre_commit-2.15.0-py2.py3-none-any.whl", hash = "sha256:a4ed01000afcb484d9eb8d504272e642c4c4099bbad3a6b27e519bd6a3e928a6"},
+    {file = "pre_commit-2.15.0.tar.gz", hash = "sha256:3c25add78dbdfb6a28a651780d5c311ac40dd17f160eb3954a0c59da40a505a7"},
 ]
 py = [
     {file = "py-1.10.0-py2.py3-none-any.whl", hash = "sha256:3b80836aa6d1feeaa108e046da6423ab8f6ceda6468545ae8d02d9d58d18818a"},
