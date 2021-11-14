@@ -1,0 +1,829 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>Tutorial - CI Plumber</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#cbdc38">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="lime" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gitlab-openshift" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="CI Plumber" class="md-header__button md-logo" aria-label="CI Plumber" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 14h-2v2h-6v-3h2v-2h-2V6a2 2 0 0 0-2-2H4V2H2v8h2V8h6v3H8v2h2v5a2 2 0 0 0 2 2h8v2h2"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CI Plumber
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tutorial
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/pbexe/ci-plumber/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CI Plumber" class="md-nav__button md-logo" aria-label="CI Plumber" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 14h-2v2h-6v-3h2v-2h-2V6a2 2 0 0 0-2-2H4V2H2v8h2V8h6v3H8v2h2v5a2 2 0 0 0 2 2h8v2h2"/></svg>
+
+    </a>
+    CI Plumber
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/pbexe/ci-plumber/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Tutorial
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-openshift" class="md-nav__link">
+    Gitlab + Openshift
+  </a>
+  
+    <nav class="md-nav" aria-label="Gitlab + Openshift">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialise-gitlab" class="md-nav__link">
+    Initialise Gitlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#push-changes-to-gitlab" class="md-nav__link">
+    Push changes to Gitlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-to-openshift" class="md-nav__link">
+    Deploy to Openshift
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-a-database" class="md-nav__link">
+    Deploy a Database
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-azure" class="md-nav__link">
+    Gitlab + Azure
+  </a>
+  
+    <nav class="md-nav" aria-label="Gitlab + Azure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialise-gitlab_1" class="md-nav__link">
+    Initialise Gitlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-new-container-registry" class="md-nav__link">
+    Create a new Container Registry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-our-app-to-azure" class="md-nav__link">
+    Deploy our App to Azure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-a-database_1" class="md-nav__link">
+    Deploy a Database
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" data-md-state="indeterminate" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Plugins
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Plugins" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Plugins
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitlab/" class="md-nav__link">
+        Gitlab
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openshift/" class="md-nav__link">
+        OpenShift
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../azure/" class="md-nav__link">
+        Azure
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-openshift" class="md-nav__link">
+    Gitlab + Openshift
+  </a>
+  
+    <nav class="md-nav" aria-label="Gitlab + Openshift">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialise-gitlab" class="md-nav__link">
+    Initialise Gitlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#push-changes-to-gitlab" class="md-nav__link">
+    Push changes to Gitlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-to-openshift" class="md-nav__link">
+    Deploy to Openshift
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-a-database" class="md-nav__link">
+    Deploy a Database
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-azure" class="md-nav__link">
+    Gitlab + Azure
+  </a>
+  
+    <nav class="md-nav" aria-label="Gitlab + Azure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialise-gitlab_1" class="md-nav__link">
+    Initialise Gitlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-new-container-registry" class="md-nav__link">
+    Create a new Container Registry
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-our-app-to-azure" class="md-nav__link">
+    Deploy our App to Azure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-a-database_1" class="md-nav__link">
+    Deploy a Database
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/pbexe/ci-plumber/edit/master/docs/tutorial.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  <h1>Tutorial</h1>
+                
+                <h2 id="gitlab-openshift">Gitlab + Openshift</h2>
+<details class="tip" open="open"><summary>A tip for the CLI prompts</summary><p>When you run the CLI, you will be prompted for information. When there is text in square brackets, this is the default. This information is often based off previous information you have entered. If you leave the prompt blank, this will be used.</p>
+<p>eg:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber azure create-db
+<span class="go">Name [my-database-779171168]:</span>
+
+<span class="go">// If you leave that prompt blank, the value &quot;my-database-779171168&quot; will be used</span>
+</code></pre></div></p>
+</details>
+<h3 id="initialise-gitlab">Initialise Gitlab</h3>
+<p>First we need to initialise the project. All of the commands can either be run interactively or using the CLI options. For this tutorial we shall be using the interactive mode.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber gitlab init
+<span class="go">Gitlab url [git.cardiff.ac.uk]: &lt;The URL to your gitlab instance&gt;</span>
+<span class="go">Username: &lt;Your username&gt;</span>
+<span class="go">Email: &lt;Your email&gt;</span>
+<span class="go">Access token: &lt;Your access token&gt;</span>
+<span class="go">Docker registry url [registry.git.cf.ac.uk]: &lt;The URL to your docker registry&gt;</span>
+<span class="go">Getting remote</span>
+<span class="go">[12:41:23] Logging in to Gitlab</span>
+<span class="go">           Getting projects</span>
+<span class="go">[12:41:24] Matching remote with Gitlab projects</span>
+<span class="go">           Found project: Flask Demo</span>
+<span class="go">           Generating .gitlab-ci.yml</span>
+<span class="go">           Generating Dockerfile</span>
+<span class="go">           Gitlab configured!</span>
+</code></pre></div>
+<p>This command will do several things:</p>
+<ol>
+<li>It will ask you for the gitlab url, username, email and access token. These will be stored in order to authenticate against Gitlab.</li>
+<li>It will also ask you for the docker registry url. This is the url that other plugins such as Openshift will be able to pull images from.</li>
+<li>It will then try to find the project that you are working on on Gitlab.</li>
+<li>It will then Genrate the .gitlab-ci.yml file and the Dockerfile if approprate for the project.</li>
+</ol>
+<h3 id="push-changes-to-gitlab">Push changes to Gitlab</h3>
+<p>We next need to push our changes to Gitlab so that Gitlab CI will run the new configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="go">// Stage the changes</span>
+
+<span class="gp">$ </span>git add .
+
+
+<span class="go">// Commit the changes</span>
+
+<span class="gp">$ </span>git commit -m <span class="s2">&quot;Add .gitlab-ci.yml and Dockerfile&quot;</span>
+
+
+<span class="go">// Create a new tag to trigger the pipeline</span>
+
+<span class="gp">$ </span>git tag -a v0.0.1 -m <span class="s2">&quot;Release v0.0.1&quot;</span>
+
+
+<span class="go">// Push the changes to Gitlab</span>
+
+<span class="gp">$ </span>git push --follow-tags
+</code></pre></div>
+<h3 id="deploy-to-openshift">Deploy to Openshift</h3>
+<p>Once Gitlab is set up, we can set up the Openshift project. Openshift should pick up on the credentials left by <code>ci-plumber gitlab init</code>. We can deploy the app to Openshift using the following command:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber openshift deploy
+<span class="go">Project: &lt;A name unique to your project&gt;</span>
+<span class="go">Username [c1769331]: &lt;Your username. The default should be yours&gt;</span>
+<span class="go">Password: &lt;You won&#39;t be able to see what you&#39;re typing here. It&#39;s not broken.&gt;</span>
+<span class="go">Repeat for confirmation:</span>
+<span class="go">[13:08:46] Logginginto GitLab</span>
+<span class="go">           Getting the Gitlab project</span>
+<span class="go">[13:08:47] Loggin in to Openshift</span>
+<span class="go">[13:08:49] Creating a new project</span>
+<span class="go">[13:08:52] Creating secrets</span>
+<span class="go">[13:09:11] Importing image-stream</span>
+<span class="go">[13:09:13] Creating a new app</span>
+<span class="go">[13:09:16] Exposing the service</span>
+<span class="go">[13:09:18] Here are the details</span>
+<span class="go">[13:09:20] &lt;The details as well as the URL will be written here&gt;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the Cardiff University Openshift, make sure that you are on the university network. You can then log in to Openshift using <code>openshift.cs.cf.ac.uk</code> as your login URL.</p>
+</div>
+<h3 id="deploy-a-database">Deploy a Database</h3>
+<p>To deploy a database as well, you can use the following command:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber openshift create-db
+<span class="go">Mysql password:</span>
+<span class="go">Mysql root password:</span>
+<span class="go">[13:19:28] Creating database config</span>
+<span class="go">           Creating MariaDB pod from openshift/mariadb-persistent template</span>
+<span class="go">[13:19:31] Exposing DB</span>
+<span class="go">[13:19:33] Getting DNS</span>
+<span class="go">[13:19:36] Writing config to maria.env</span>
+
+
+<span class="go">// You can now find the credentials in maria.env</span>
+
+<span class="gp">$ </span>cat maria.env
+
+<span class="go">ADMIN_PASSWORD=&lt;Your password&gt;</span>
+<span class="go">USER=maria_user</span>
+<span class="go">PASSWORD=&lt;Your password&gt;</span>
+<span class="go">NAME=mariadb</span>
+<span class="go">HOST=&lt;The database DNS&gt;</span>
+</code></pre></div></p>
+<h2 id="gitlab-azure">Gitlab + Azure</h2>
+<h3 id="initialise-gitlab_1">Initialise Gitlab</h3>
+<p>To deploy to Azure, we shall use a different architecture for the project. We will begin in a similar manner to the Gitlab + Openshift section:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber gitlab init
+<span class="go">Gitlab url [git.cardiff.ac.uk]: &lt;The URL to your gitlab instance&gt;</span>
+<span class="go">Username: &lt;Your username&gt;</span>
+<span class="go">Email: &lt;Your email&gt;</span>
+<span class="go">Access token: &lt;Your access token&gt;</span>
+<span class="go">Docker registry url [registry.git.cf.ac.uk]: &lt;The URL to your docker registry&gt;</span>
+<span class="go">Getting remote</span>
+<span class="go">[12:41:23] Logging in to Gitlab</span>
+<span class="go">           Getting projects</span>
+<span class="go">[12:41:24] Matching remote with Gitlab projects</span>
+<span class="go">           Found project: Flask Demo</span>
+<span class="go">           Generating .gitlab-ci.yml</span>
+<span class="go">           Generating Dockerfile</span>
+<span class="go">           Gitlab configured!</span>
+</code></pre></div>
+<h3 id="create-a-new-container-registry">Create a new Container Registry</h3>
+<p>This will create Gitlab credentials similarly to before. However, we will now be using Azure instead of Gitlab to store the images. We must begin by creating a new Azure container registry:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber azure create-registry
+<span class="go">Registry name [registry887130626]:</span>
+<span class="go">Resource group name [myResourceGroup]: sub1</span>
+<span class="go">[16:00:16] Creating resource group sub1</span>
+<span class="go">[16:00:24] Creating registry registry887130626</span>
+<span class="go">[16:00:40] Enabling admin user</span>
+<span class="go">[16:00:43] Getting admin credentials</span>
+<span class="go">[16:00:46] Logging in to Gitlab</span>
+<span class="go">           Gettingthe Gitlab project</span>
+<span class="go">           Creating Azure access keys in CI</span>
+<span class="go">           Azure access keys already exist in Gitlab CI for c1769331/flask-demo</span>
+<span class="go">[16:00:47] Creating .gitlab-ci.yml</span>
+
+
+<span class="go">// Stage the changes</span>
+
+<span class="gp">$ </span>git add .
+
+
+<span class="go">// Commit the changes</span>
+
+<span class="gp">$ </span>git commit -m <span class="s2">&quot;Add .gitlab-ci.yml and Dockerfile&quot;</span>
+
+
+<span class="go">// Create a new tag to trigger the pipeline</span>
+
+<span class="gp">$ </span>git tag -a v0.0.1 -m <span class="s2">&quot;Release v0.0.1&quot;</span>
+
+
+<span class="go">// Push the changes to Gitlab</span>
+
+<span class="gp">$ </span>git push
+</code></pre></div>
+<h3 id="deploy-our-app-to-azure">Deploy our App to Azure</h3>
+<p>We have now instantiated a new Azure container registry, pointed Gitlab CI to push new images to the registry, and triggered a build which should push the new image to the registry.</p>
+<p>Next, we need to deploy the app to Azure. We will use the following command:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber azure deploy
+<span class="go">Service plan [myServicePlan]:</span>
+<span class="go">App name [myApp-159731108]:</span>
+<span class="go">[16:08:33] Creating app service plan</span>
+<span class="go">[16:08:43] Creating web app. This may take a while...</span>
+<span class="go">[16:09:20] Assigning managed identity</span>
+<span class="go">[16:09:28] Retrieving subscription ID</span>
+<span class="go">[16:09:31] Granting permission to access container registry</span>
+<span class="go">[16:09:42] Configuring app to use managed identity</span>
+<span class="go">[16:09:47] Deploying</span>
+<span class="go">[16:09:56] Deployed to https://myapp-159731108.azurewebsites.net</span>
+<span class="go">           It may take a moment to come online</span>
+</code></pre></div>
+<p>As can be seen, the app is now deployed to Azure.</p>
+<h3 id="deploy-a-database_1">Deploy a Database</h3>
+<p>We might also want to deploy a database for the project. We can use the following command:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>ci-plumber azure create-db
+<span class="go">Name [my-database-779171168]:</span>
+<span class="go">Admin username [myadmin]:</span>
+<span class="go">Admin password:</span>
+<span class="go">Repeat for confirmation:</span>
+<span class="go">[16:12:32] Initialising Server. This may take a while...</span>
+<span class="go">[16:15:41] Created Database</span>
+<span class="go">           The credentials have been written to maria.env</span>
+</code></pre></div>
+<p>Similarly to the Openshift example, the details of the database are written to <code>maria.env</code>. This file uses standard syntax for environment variables, so it can be easily loaded using whatever method you prefer. For example, <a href="https://saurabh-kumar.com/python-dotenv/">dotenv</a> in Python.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../installation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Installation" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Installation
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../gitlab/" class="md-footer__link md-footer__link--next" aria-label="Next: Gitlab" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Gitlab
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "navigation.expand"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>
