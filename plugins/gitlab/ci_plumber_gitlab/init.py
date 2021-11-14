@@ -72,7 +72,7 @@ def init(
 
         # Generate .gitlab-ci.yml
         console.log("Generating .gitlab-ci.yml")
-        generate_gitlab_yaml(Path.cwd(), "gitlab-ci.yml")
+        generate_gitlab_yaml(Path.cwd(), ".gitlab-ci.yml")
         console.log("Generating Dockerfile")
         generate_docker_file(Path.cwd(), "Dockerfile")
 
